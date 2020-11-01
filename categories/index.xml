@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Jonathan Jauhari</title>
+    <link>https://jonjau.github.io/categories/</link>
+    <description>Recent content in Categories on Jonathan Jauhari</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    
+	<atom:link href="https://jonjau.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    
+    
+    
+    <item>
+      <title>Monads, Applicatives and Functors in Haskell</title>
+      <link>https://jonjau.github.io/posts/monads-applicatives-and-functors-in-haskell/</link>
+      <pubDate>Wed, 07 Oct 2020 22:31:10 +1100</pubDate>
+      
+      <guid>https://jonjau.github.io/posts/monads-applicatives-and-functors-in-haskell/</guid>
+      <description>This is a brief summary of Chapter 11 and 12 of Learn You a Haskell for Great Good!, a great introduction to functional programming and Haskell. I&amp;rsquo;ve found its explanation of monads, by far the most notorious of category theory jargon (monoids and functors being runner-ups), to be about as intuitive as monad explanations can get. Here are some notes I made:
+Values Values have types. Types can be inferred:</description>
+    </item>
+    
+    
+    
+    
+    
+    
+  </channel>
+</rss>
