@@ -35,7 +35,63 @@
         <main id="content">
 <article>
     <header id="project-header">
-        <h1>Cifero</h1><time>November 2018</time></header></article>
+        <h1>Cifero</h1><time>November 2018</time></header><p><a href="https://github.com/jonjau/cifero">Github</a></p>
+<p>64-bit Windows 10 / Linux executables are available on the Github page.</p>
+<p>Cifero is a Python GUI (PyQt5) program for (esoteric)
+phonetic transliteration and syllable separation. Transliterates sentences to
+and from: dictionary English, IPA, a &ldquo;typable&rdquo; IPA, a &ldquo;readable&rdquo; IPA, and a
+phonetic cipher. Currently punctuation is a problem.</p>
+<p>The dictionary used is the
+<a href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict">CMU pronouncing dictionary</a>.</p>
+<p>This was my first non-trivial program, after
+<a href="https://www.amazon.com/Programming-Principles-Practice-Using-C/dp/0321543726">reading</a>
+<a href="https://nostarch.com/automatestuff2">a</a>
+<a href="https://www.amazon.com/Fluent-Python-Concise-Effective-Programming/dp/1491946008">few</a>
+<a href="https://buildmedia.readthedocs.org/media/pdf/howtothink/latest/howtothink.pdf">books</a>.</p>
+<h2 id="keysmith">Keysmith</h2>
+<p>Initially, I wanted to do this project in pure Python with Python libraries.
+This meant working with Tkinter, which was low-level in the sense that there
+weren&rsquo;t many UI elements you get for free. The UI layout management got really
+messy, so I gave up on allowing resizable windows, and hardcoded most of the
+layout. This corner cutting ended up making every additional change very
+fiddly. The program itself was functional, but it was impossible to polish.</p>
+<p>This iteration of the program was called Keysmith, and I imagined distributing
+it would involve a lot of hacks, so I moved on and thought about rewriting the
+interface in some other framework, something more &ldquo;drag-and-drop&rdquo;.</p>
+<p>I ended up looking into Qt, a well-known GUI framework that claimed to be
+cross-platform. I did a
+<a href="https://github.com/jonjau/countdown">sample C++ project</a>
+in it and redesigned the Keysmith interface in QtDesigner. What I saw was what
+I got, and what I got was resizable windows, plus a two-click conversion into
+Python code, via PyQt5. I tried running it in an Ubuntu VM and sure enough, it
+looked like it belonged there &ndash; cross-platform indeed.</p>
+<p>This one I called Cifero, which sounds like what the word for &ldquo;cipher&rdquo; would
+be in Esperanto (I don&rsquo;t think it&rsquo;s cifero).</p>
+<h2 id="features">Features</h2>
+<ul>
+<li>Cross-platform Qt GUI, designed in QtDesigner</li>
+<li>Regex-based syllable separation of English words</li>
+<li>Phonetic transliteration of English words in IPA or a more pronounceable
+form of it</li>
+<li>Transcription to and from IPA and my esoteric writing systems</li>
+</ul>
+<h2 id="screenshots">Screenshots</h2>
+<p><img src="/cifero/ks1.png" alt="ks1">
+<img src="/cifero/c1.png" alt="c1">
+<img src="/cifero/c2.png" alt="c2">
+<img src="/cifero/c5.png" alt="c5"></p>
+<h2 id="sample-text">Sample text</h2>
+<p>Here&rsquo;s the sample text (mostly obscure loanwords):</p>
+<pre><code class="language-_" data-lang="_">Hello World, look at this syllable separation:
+archetypes of cinematography and comfort colonel highfalutin. Are those shy
+eurasian footwear, cowboy chaps or jolly earthmoving headgear?
+
+lieutenant draught zeitgeist worcestershire isthmus often hierarchical
+lingerie chassis cajole maitre bourgeoisie corps renaissance jewelry
+apartheid orangutan pedagogical drawer choir colloquial iroquois debauchery
+epitome phlegmatic aficionado caballero taekwondo agitprop apparatchik
+genghis khan caesar abscond
+</code></pre></article>
 
         </main><footer id="footer">
     Copyright © 2020 Jonathan Jauhari
