@@ -40,7 +40,8 @@
 a great introduction to functional programming and Haskell. I&rsquo;ve found its
 explanation of monads, by far the most notorious of category theory jargon
 (monoids and functors being runner-ups), to be about as intuitive as monad
-explanations can get. Here are some notes I made:</p>
+explanations can get.</p>
+<p>This is hardly comprehensive, but here are some notes I made:</p>
 <h2 id="values">Values</h2>
 <p>Values have types. Types can be inferred:</p>
 <div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="nf">x</span> <span class="ow">=</span> <span class="sc">&#39;f&#39;</span>       <span class="c1">-- x has (inferred) type Char</span>
@@ -137,7 +138,7 @@ in Data.Monoid), and True and AND (newtype&rsquo;d as <code>All</code> in Data.M
 &ldquo;computational context&rdquo;.</p>
 <blockquote>
 <ul>
-<li>functors are things that can be mapped over (lists, Maybes, trees).</li>
+<li>functors are things that can be mapped over (lists, Maybes).</li>
 <li>functors are instances of the typeclass Functor.</li>
 <li><code>fmap</code> works like <code>map</code>, but is more general (works on all functors, not
 just lists).</li>
