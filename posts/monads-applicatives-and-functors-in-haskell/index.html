@@ -35,36 +35,59 @@
         <main id="content">
 <article>
     <header id="post-header">
-        <h1>Monads, Applicatives and Functors in Haskell</h1><time>October 7, 2020</time></header><p>This is a brief summary of Chapter 11 and 12 of
+        <h1>Monads, Applicatives and Functors in Haskell</h1><time>October 7, 2020</time></header><p>This is my summary of Chapter 11 and 12 of
 <a href="http://learnyouahaskell.com/chapters">Learn You a Haskell for Great Good!</a>,
 a great introduction to functional programming and Haskell. I&rsquo;ve found its
 explanation of monads, by far the most notorious of category theory jargon
 (monoids and functors being runner-ups), to be about as intuitive as monad
 explanations can get.</p>
-<p>This is hardly comprehensive, but here are some notes I made:</p>
+<p>This is hardly comprehensive, but these notes touch on most of the main
+concepts of the Haskell type system (that I&rsquo;m aware of&hellip;).</p>
 <h2 id="values">Values</h2>
 <p>Values have types. Types can be inferred:</p>
 <div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="nf">x</span> <span class="ow">=</span> <span class="sc">&#39;f&#39;</span>       <span class="c1">-- x has (inferred) type Char</span>
-<span class="nf">y</span> <span class="ow">=</span> <span class="p">[</span><span class="sc">&#39;f&#39;</span><span class="p">,</span><span class="sc">&#39;g&#39;</span><span class="p">]</span> <span class="c1">-- y has (inferred) type [Char]</span>
-</code></pre></div><p>Use <code>:t</code> in GHCi to check the type of a value. <code>::</code> can be read as &lsquo;type of&rsquo;.</p>
-<h2 id="functions">Functions</h2>
-<p>Functions map values to values. Since functions themselves are values,
-they too have types.</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="nf">f</span> <span class="n">x</span> <span class="ow">=</span> <span class="n">x</span>          <span class="c1">-- f :: p -&gt; p</span>
-<span class="nf">g</span> <span class="n">x</span> <span class="n">y</span> <span class="ow">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>    <span class="c1">-- g :: Num a =&gt; a -&gt; a -&gt; a</span>
-</code></pre></div><p>The second function has a type constraint: it takes two arguments of a type
-<code>a</code> that must be a type of number, e.g. <code>Int</code>. Note functions in Haskell are
-automatically <a href="https://en.wikipedia.org/wiki/Currying">curried</a> (like partial
-application, but one argument at at time).</p>
-<h2 id="defining-data-types">Defining (data) types</h2>
-<p><code>data</code> defines an algebraic data type (ADT) &ldquo;from scratch&rdquo;:</p>
+<span class="nf">y</span> <span class="ow">=</span> <span class="p">[</span><span class="sc">&#39;f&#39;</span><span class="p">,</span><span class="sc">&#39;g&#39;</span><span class="p">]</span> <span class="c1">-- y has (inferred) type [Char], a list of Char&#39;s</span>
+</code></pre></div><p>Use <code>:t</code> in <a href="https://docs.haskellstack.org/en/stable/ghci/">GHCi</a>
+to check the type of a value, e.g. <code>:t 'f'</code> will give <code>f :: Char</code>, where
+<code>::</code> can be read as &lsquo;type of&rsquo; or &lsquo;has type&rsquo;. There is also
+<a href="%5Bhoogle.com%5D(https://hoogle.haskell.org)">Hoogle</a>.
+Though Haskell is able to infer types very well, it is good practice that
+top-level definitions are explicitly type-annotated:</p>
+<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- the type declaration doesn&#39;t have to sit on top of the definition either</span>
+<span class="nf">x</span> <span class="ow">::</span> <span class="kt">Char</span>
+<span class="nf">x</span> <span class="ow">=</span> <span class="sc">&#39;f&#39;</span>
+</code></pre></div><h2 id="functions">Functions</h2>
+<p>Functions map values to values. Since functions themselves are values
+(<a href="https://en.wikipedia.org/wiki/First-class_citizen">&ldquo;first-class citizens&rdquo;</a>),
+they too have types. <code>f :: p -&gt; p</code> can be read as &ldquo;f takes a p and returns a p&rdquo;.</p>
+<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="nf">f</span> <span class="ow">::</span> <span class="n">p</span> <span class="ow">-&gt;</span> <span class="n">p</span>
+<span class="nf">f</span> <span class="n">x</span> <span class="ow">=</span> <span class="n">x</span>            <span class="c1">-- no-op</span>
+
+<span class="nf">g</span> <span class="ow">::</span> <span class="kt">Eq</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
+<span class="nf">g</span> <span class="n">x</span> <span class="n">y</span> <span class="ow">=</span> <span class="n">x</span> <span class="o">==</span> <span class="n">y</span>      <span class="c1">-- equality, g is pretty much (==)</span>
+</code></pre></div><p>The second function <code>g</code> has a type constraint: it takes two arguments of a type
+<code>a</code> that must have properly defined equality, such that it is of the
+typeclass <code>Eq</code> (more on this later), e.g. <code>Int</code>. This is parametric
+polymorphism, with especially lightweight syntax.</p>
+<p>Note functions in Haskell are automatically
+<a href="https://en.wikipedia.org/wiki/Currying">curried</a> (like partial application,
+but one argument at at time) &ndash; a function that takes two arguments, like <code>g</code>,
+is still a valid function when only one of its arguments is given:</p>
+<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- (g 3) is a function that expects one argument, and returns true if it equals</span>
+<span class="c1">-- 3 and false otherwise. This returns all the items equal to 3 in the list:</span>
+<span class="nf">filter</span> <span class="p">(</span><span class="n">g</span> <span class="mi">3</span><span class="p">)</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="c1">-- evaluates to [3,3]</span>
+</code></pre></div><h2 id="defining-data-types">Defining (data) types</h2>
+<p><code>data</code> defines an algebraic data type
+(<a href="https://en.wikipedia.org/wiki/Algebraic_data_type">ADT</a>):</p>
 <div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="kr">data</span> <span class="kt">TrafficLight</span> <span class="ow">=</span> <span class="kt">Red</span> <span class="o">|</span> <span class="kt">Yellow</span> <span class="o">|</span> <span class="kt">Green</span>
+
+<span class="c1">-- the value of type Person may be constructed with: Person &#34;bob&#34; 9</span>
 <span class="kr">data</span> <span class="kt">Person</span> <span class="ow">=</span> <span class="kt">Person</span> <span class="kt">String</span> <span class="kt">Int</span>
 </code></pre></div><p>On the left is the name of the type, and on the right are data constructors
 (or type constructors). Type constructors are like functions: they may take
 parameters and are automatically curried. Types may have the same name as
-their data constructor(s). Note that type constructors do not define any
-computation, they simply construct types.</p>
+their data constructor(s). Note that type constructors do not have a function
+body), they simply construct types.</p>
 <p><code>newtype</code> defines new types out of existing data types:</p>
 <div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- this is record syntax in Haskell</span>
 <span class="kr">data</span> <span class="kt">ZipList</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">ZipList</span> <span class="p">{</span> <span class="n">getZipList</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="p">}</span>
@@ -74,7 +97,7 @@ computation, they simply construct types.</p>
 </code></pre></div><p>It was made exactly for cases when we want to just take one type and
 wrap it in something to present it as another type.
 <code>data</code> can only and should be replaced with <code>newtype</code> if the type has exactly
-one constructor with exactly one field inside it.</p>
+one constructor with exactly one field inside it. Contrast this with:</p>
 <h2 id="type-synonyms">Type synonyms</h2>
 <p><code>type</code> defines a type alias. Wherever one can be used, the other can
 take its place. No data constructor is defined.</p>
@@ -82,12 +105,13 @@ take its place. No data constructor is defined.</p>
 </code></pre></div><h2 id="typeclasses">Typeclasses</h2>
 <p>A typeclass takes a type variable and describes what can be done to it;
 typeclasses are like interfaces.</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- what does it mean to have well-defined equality?</span>
+<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- What does it mean to have well-defined equality?</span>
+<span class="c1">-- It must define the following functions:</span>
 <span class="kr">class</span> <span class="kt">Eq</span> <span class="n">a</span> <span class="kr">where</span>
     <span class="p">(</span><span class="o">==</span><span class="p">)</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
     <span class="p">(</span><span class="o">/=</span><span class="p">)</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
-    <span class="n">x</span> <span class="o">==</span> <span class="n">y</span> <span class="ow">=</span> <span class="n">not</span> <span class="p">(</span><span class="n">x</span> <span class="o">/=</span> <span class="n">y</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">/=</span> <span class="n">y</span> <span class="ow">=</span> <span class="n">not</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">==</span> <span class="n">y</span> <span class="ow">=</span> <span class="n">not</span> <span class="p">(</span><span class="n">x</span> <span class="o">/=</span> <span class="n">y</span><span class="p">)</span>    <span class="c1">-- this is the default implementation for (==)</span>
+    <span class="n">x</span> <span class="o">/=</span> <span class="n">y</span> <span class="ow">=</span> <span class="n">not</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span>    <span class="c1">-- and for (/=), note the indirect recursion.</span>
 </code></pre></div><p>typeclasses allow for polymorphism:</p>
 <div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- constraints check out: works for any type a that is an instance of Eq</span>
 <span class="nf">equal</span> <span class="ow">::</span> <span class="kt">Eq</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
@@ -101,26 +125,29 @@ typeclasses are like interfaces.</p>
     <span class="kr">_</span> <span class="o">==</span> <span class="kr">_</span> <span class="ow">=</span> <span class="kt">False</span>
 </code></pre></div><blockquote>
 <p>If you want to see what the instances of a typeclass are, just do <code>:info</code>
-(or <code>:i</code>) on a typeclass in GHCI. So typing <code>:info Num</code> will show which
+(or <code>:i</code>) on a typeclass in GHCI. Typing <code>:info Num</code> will show which
 functions the typeclass defines and it will give you a list of the types in
 the typeclass. <code>:info</code> works for types and type constructors too.</p>
 </blockquote>
 <h2 id="monoids">Monoids</h2>
-<p>A monoid is when you have an associative binary function e.g. (1*(2*3) ==
-(1*2)*3) and a value which acts as an identity with respect to that
-function. When something acts as an identity with respect to a function, it
-means that when called with that function and some other value, the result is
-always equal to that other value:</p>
+<p>A monoid is a type for which you have a well-defined associative binary
+function e.g. <code>(*)</code> in <code>(1*(2*3) == (1*2)*3)</code> and a value which acts as an
+identity with respect to that function. When something acts as an identity
+with respect to a function, it means that when called with that function and
+some other value, the result is always equal to that other value:</p>
 <blockquote>
 <p><code>1</code> is the identity with respect to <code>*</code>
-and <code>[]</code> is the identity with respect to <code>++</code>.</p>
+and <code>[]</code> is the identity with respect to <code>++</code>.
+Any number multiplied by 1 is itself, and appending the empty list to any
+list yields the list. So <code>1</code> and <code>[]</code> are <code>mempty</code>s and <code>*</code> and <code>++</code> are
+<code>mappend</code>s for the <code>Num</code> and <code>[]</code> monoids, respectively.</p>
 </blockquote>
 <div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="kr">class</span> <span class="kt">Monoid</span> <span class="n">m</span> <span class="kr">where</span>
     <span class="n">mempty</span> <span class="ow">::</span> <span class="n">m</span> <span class="c1">-- polymorphic constant: the identity value (e.g. 1 w.r.t *)</span>
     <span class="n">mappend</span> <span class="ow">::</span> <span class="n">m</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="c1">-- takes two monoid values and returns a third</span>
     <span class="n">mconcat</span> <span class="ow">::</span> <span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="n">m</span>
     <span class="n">mconcat</span> <span class="ow">=</span> <span class="n">foldr</span> <span class="n">mappend</span> <span class="n">mempty</span> <span class="c1">-- default implementation!</span>
-</code></pre></div><p>Monoid laws:</p>
+</code></pre></div><p>Monoid laws (surrounding a function with backticks (`) allows infix calling):</p>
 <ul>
 <li>mempty `mappend` x = x</li>
 <li>x `mappend` mempty = x</li>
@@ -138,20 +165,60 @@ in Data.Monoid), and True and AND (newtype&rsquo;d as <code>All</code> in Data.M
 &ldquo;computational context&rdquo;.</p>
 <blockquote>
 <ul>
-<li>functors are things that can be mapped over (lists, Maybes).</li>
-<li>functors are instances of the typeclass Functor.</li>
+<li>functors are things that can be mapped over (e.g. lists, Maybes).</li>
+<li>functors are instances of the typeclass <code>Functor</code>.</li>
 <li><code>fmap</code> works like <code>map</code>, but is more general (works on all functors, not
 just lists).</li>
 <li><code>(&lt;$&gt;)</code> is an infix synonym of <code>fmap</code>.</li>
-<li>&ldquo;normal&rdquo; functors support mapping &ldquo;normal&rdquo; functions over them.</li>
+<li>&ldquo;normal&rdquo; functors support mapping &ldquo;normal&rdquo; functions over them.
+&ldquo;normal&rdquo; here meaning dealing with plain old values, i.e. non-monadic
+values.</li>
 </ul>
 </blockquote>
-<p>functor laws:</p>
+<p>Technically any type can be defined to be a Functor, whether it makes sense
+is a separate issue. Examples of where it makes sense:</p>
 <ul>
-<li><code>fmap id = id</code>, where <code>id</code> is <code>\x -&gt; x</code>: &ldquo;return what was passed&rdquo;</li>
-<li><code>fmap (f . g) = fmap f . fmap g</code>, equivalently,
-<code>fmap (f . g) F = fmap f (fmap g F)</code>.</li>
+<li>mapping a function over a list of <code>a</code>s means applying the function to each
+<code>a</code> in the list. The computational context here is the &ldquo;repetition&rdquo;.</li>
+<li>mapping a function over a <code>Maybe a</code>, means applying the function to the <code>a</code>
+if it&rsquo;s there, or evaluating to <code>Nothing</code> if it&rsquo;s not.
+The computational context here is the &ldquo;optionality&rdquo;.</li>
 </ul>
+<blockquote>
+<p>A <code>Maybe a</code> is either a <code>Just a</code> or a <code>Nothing</code> &ndash; it has two data
+constructors.</p>
+</blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- these two expressions are equivalent, they both evaluate to [4,5,6,7,8]</span>
+<span class="nf">fmap</span> <span class="p">(</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="p">(</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="o">&lt;$&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+
+<span class="c1">-- a Maybe supports mapping (+3), a normal function as follows:</span>
+<span class="nf">fmap</span> <span class="p">(</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="kt">Just</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">-- evaluates to (Just 8)</span>
+<span class="p">(</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="o">&lt;$&gt;</span> <span class="kt">Nothing</span>   <span class="c1">-- evaluates to Nothing</span>
+</code></pre></div><blockquote>
+<p>Note how the values end up inside the context (wrapped in the List/Maybe).
+In general there is not a nice function you can use to recover the <code>a</code> once
+it is inside a functor (or an <code>Applicative</code>, or a <code>Monad</code>). That is,
+<code>Functor</code> does not require its instances to define what it means to unwrap
+a the context to return the value.</p>
+<p>This is by design. For instance, unwrapping a <code>Maybe</code> to try and get the value
+inside of it doesn&rsquo;t always make sense: what would <code>Nothing</code> unwrap into?
+<strong>&hellip; NullPointerException</strong>. In the case of the <code>IO</code> monad, whose
+computational context I think of as &ldquo;impurity&rdquo;, it is even more finicky to
+extract a pure value from a monadic one. In any case you will invite
+runtime errors.</p>
+</blockquote>
+<p>Anyway, here are the Functor laws:</p>
+<ol>
+<li><code>fmap id = id</code>, where <code>id</code> is <code>\x -&gt; x</code>: &ldquo;return what was passed&rdquo;</li>
+<li><code>fmap (f . g) = fmap f . fmap g</code>, or equivalently,<br>
+<code>fmap (f . g) F = fmap f (fmap g F)</code>.</li>
+</ol>
+<p>The <code>\x y -&gt; x + y</code> syntax is a lambda expression, here it defines an
+anonymous function that takes two arguments x and y and returns their sum.
+The <code>.</code> syntax is
+<a href="https://en.wikipedia.org/wiki/Function_composition">function composition</a> as
+in mathematics: <code>(f . g) x</code> is equivalent to <code>f (g x)</code>.</p>
 <h2 id="applicative-functors">Applicative functors</h2>
 <p>What if I want to map normal functions in a functor over another functor:
 &ldquo;to reach into the context, compute, and return the value in that context&rdquo;?
@@ -161,34 +228,108 @@ Those functors must be applicative.</p>
 <li>applicative values are values with &ldquo;added context&rdquo;, e.g. <code>Just 5</code></li>
 <li>applicative functors support mapping functions inside functors over them</li>
 <li>applicative functors are functors, and they are instances of the
-Applicative typeclasss. It defines pure and (&lt;*&gt;).</li>
-<li>pure takes a value and returns that value in the applicative functor
-(&ldquo;wrap it in a minimal context that returns that value&rdquo;)</li>
-<li>&lt;*&gt; (infix) takes a functor with a function in it and another functor,
+<code>Applicative</code> typeclass. It defines <code>pure</code> and <code>(&lt;*&gt;)</code>.</li>
+<li><code>pure</code> takes a value and returns that value in the applicative functor
+(&ldquo;wrapped in the minimal context&rdquo;)</li>
+<li><code>&lt;*&gt;</code> (infix) takes a functor with a function in it and another functor,
 and extracts the function from the first functor and maps it over the
 second one.</li>
 </ul>
 </blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- mapping functions in a functor over values in a functor</span>
+<span class="c1">-- (the same type of functor!)</span>
+<span class="p">[(</span><span class="o">+</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="p">),</span> <span class="p">(</span><span class="o">^</span><span class="mi">2</span><span class="p">)]</span> <span class="o">&lt;*&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="c1">-- [4,5,6,7,0,-1,-2,-3,1,4,9,16]</span>
+<span class="p">[(</span><span class="o">==</span><span class="mi">3</span><span class="p">)]</span> <span class="o">&lt;*&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>            <span class="c1">-- [False, False, True, False]</span>
+
+<span class="p">(</span><span class="kt">Just</span> <span class="p">(</span><span class="o">+</span><span class="mi">3</span><span class="p">))</span> <span class="o">&lt;*&gt;</span> <span class="kt">Nothing</span>    <span class="c1">-- Nothing</span>
+<span class="p">(</span><span class="kt">Just</span> <span class="p">(</span><span class="mi">3</span><span class="o">-</span><span class="p">))</span> <span class="o">&lt;*&gt;</span> <span class="p">(</span><span class="kt">Just</span> <span class="p">(</span><span class="mi">7</span><span class="p">))</span> <span class="c1">-- Just (-4)</span>
+<span class="kt">Nothing</span> <span class="o">&lt;*&gt;</span> <span class="kt">Nothing</span>        <span class="c1">-- Nothing</span>
+</code></pre></div><p>Applicative functor laws (this is where the analogies fall apart):</p>
+<ol>
+<li><code>pure id &lt;*&gt; v = v</code></li>
+<li><code>pure f &lt;*&gt; pure x = pure (f x)</code></li>
+<li><code>u &lt;*&gt; pure y = pure ($ y) &lt;*&gt; u</code></li>
+<li><code>pure (.) &lt;*&gt; u &lt;*&gt; v &lt;*&gt; w = u &lt;*&gt; (v &lt;*&gt; w)</code></li>
+</ol>
 <h2 id="monads">Monads</h2>
-<p>What if I have a value with a context, <code>m a</code>, and want apply to it a function
-that takes a normal <code>a</code> and returns a value with that context?</p>
-<p>How do you apply a function of type <code>a -&gt; m b</code> to a value of type <code>m a</code>?</p>
+<p>What if I have a value in a context, <code>m a</code>, and want apply to it a function
+that takes a normal <code>a</code> and returns a value in that context?
+How do you apply a function of type <code>a -&gt; m b</code> to a value of type <code>m a</code>?</p>
+<p>Another take on monads from a similarly great book:
+<a href="http://book.realworldhaskell.org/read/monads.html">a programmable semicolon</a>.</p>
 <blockquote>
 <ul>
-<li>monads are just applicative functors that support <code>&gt;&gt;=</code> (&ldquo;bind&rdquo;)</li>
-<li><code>&gt;&gt;=</code> like function application, only instead of taking a normal value
+<li>monads are just applicative functors that support <code>&gt;&gt;=</code> (read as &ldquo;bind&rdquo;)</li>
+<li><code>&gt;&gt;=</code> is like function application, only instead of taking a normal value
 and feeding it to a normal function, it takes a monadic value (that is,
 a value with a context) and feeds it to a function that takes a normal
 value but returns a monadic value.</li>
-<li><code>return</code> is the same as <code>pure</code>, just a different name.</li>
+<li>a <code>Monad</code>&rsquo;s <code>return</code> is the same as an <code>Applicative</code>&rsquo;s <code>pure</code>,
+just a different name.</li>
 </ul>
 </blockquote>
-<p><a href="https://en.wikibooks.org/wiki/Haskell/do_notation">do-blocks</a>
-are syntactic sugar to deal with monads, to avoid nesting.</p>
-<p>The distinction with applicative functors is very slight.
+<p>The most useful monad: the <code>IO</code> monad (again, it is also an Applicative and a
+Functor). Sequencing operations one after the other (functions) is possible
+in the IO monad. This looks like imperative programming and is indeed necessary
+when dealing with IO operations, which are inherently
+<a href="https://en.wikipedia.org/wiki/Functional_purity">impure</a>.</p>
+<p>In a way, since the fact that potential side effects from the <code>IO</code> operations
+are clearly in laid out in the type system, they are not really side effects,
+and this makes the whole program easier to reason with. It is said that this
+makes Haskell a purely functional language still.</p>
+<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- we can finally write Hello World :)</span>
+<span class="c1">-- f &gt;&gt; g is the same as f &gt;&gt;= \_ -&gt; g</span>
+<span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">main</span> <span class="ow">=</span>
+    <span class="n">putStr</span> <span class="s">&#34;Hello&#34;</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="kr">_</span> <span class="ow">-&gt;</span>
+        <span class="n">putStr</span> <span class="s">&#34; ...World&#34;</span> <span class="o">&gt;&gt;</span>
+            <span class="n">putStrLn</span> <span class="s">&#34;in Haskell&#34;</span>
+
+<span class="c1">-- demonstrating the I in IO, as well as monad syntax:</span>
+<span class="c1">-- a function that fetches user input, prints it out and returns it.</span>
+<span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="kt">String</span>
+<span class="nf">main</span> <span class="ow">=</span>
+    <span class="n">putStrLn</span> <span class="s">&#34;Who?&#34;</span> <span class="o">&gt;&gt;</span>
+        <span class="n">getLine</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">name</span> <span class="ow">-&gt;</span>
+            <span class="n">putStrLn</span> <span class="p">(</span><span class="s">&#34;Oh Hello &#34;</span> <span class="o">++</span> <span class="n">name</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+                <span class="n">return</span> <span class="n">name</span>
+</code></pre></div><p>The distinction with applicative functors is very slight.
 <strong>Most common functors are applicative and are monads</strong>, e.g.
 <code>[]</code>, <code>Maybe</code>, <code>State</code>, <code>IO</code></p>
-<h2 id="types-and-instances-of-functors-et-al">Types and instances of functors et al.</h2>
+<p><a href="https://en.wikibooks.org/wiki/Haskell/do_notation">do-blocks</a>
+are syntactic sugar to deal with monads, to do away with nesting. See below.</p>
+<h2 id="syntax">Syntax</h2>
+<p>To make a point about the syntax, all of these functions are exactly equivalent:</p>
+<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- list comprehension</span>
+<span class="c1">-- lists get their own special shorthand syntax, comprehensions like in Python.</span>
+<span class="nf">e1</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="kt">Int</span><span class="p">)]</span>
+<span class="nf">e1</span> <span class="n">lst</span> <span class="ow">=</span>
+    <span class="kr">let</span> <span class="n">c</span> <span class="ow">=</span> <span class="mi">3</span>
+    <span class="kr">in</span>  <span class="p">[(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">c</span><span class="p">)</span> <span class="o">|</span> <span class="n">x</span> <span class="ow">&lt;-</span> <span class="n">lst</span><span class="p">,</span> <span class="n">y</span> <span class="ow">&lt;-</span> <span class="n">lst</span><span class="p">]</span>
+
+<span class="c1">-- do-block: &#34;implicit&#34; (&gt;&gt;=)&#39;s</span>
+<span class="nf">e2</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="kt">Int</span><span class="p">)]</span>
+<span class="nf">e2</span> <span class="n">lst</span> <span class="ow">=</span> <span class="kr">do</span>
+    <span class="n">x</span> <span class="ow">&lt;-</span> <span class="n">lst</span>
+    <span class="n">y</span> <span class="ow">&lt;-</span> <span class="n">lst</span>
+    <span class="kr">let</span> <span class="n">c</span> <span class="ow">=</span> <span class="mi">3</span>
+    <span class="n">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+
+<span class="c1">-- sugarless: binding monadic operations explicitly</span>
+<span class="nf">e3</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="kt">Int</span><span class="p">)]</span>
+<span class="nf">e3</span> <span class="n">lst</span> <span class="ow">=</span>
+    <span class="kr">let</span> <span class="n">c</span> <span class="ow">=</span> <span class="mi">3</span> <span class="kr">in</span>
+    <span class="n">lst</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">x</span> <span class="ow">-&gt;</span>
+        <span class="n">lst</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">y</span> <span class="ow">-&gt;</span>
+            <span class="n">pure</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+
+<span class="c1">-- maximum golf: remember (&lt;*&gt;) :: Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b</span>
+<span class="c1">-- implicitly the &lt;$&gt; bit is evaluated first to get a list of functions.</span>
+<span class="nf">e4</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="kt">Int</span><span class="p">)]</span>
+<span class="nf">e4</span> <span class="n">lst</span> <span class="ow">=</span>
+    <span class="kr">let</span> <span class="n">c</span> <span class="ow">=</span> <span class="mi">3</span> <span class="kr">in</span>
+    <span class="p">(</span><span class="nf">\</span><span class="n">x</span> <span class="n">y</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">c</span><span class="p">))</span> <span class="o">&lt;$&gt;</span> <span class="n">lst</span> <span class="o">&lt;*&gt;</span> <span class="n">lst</span>
+</code></pre></div><h2 id="types-and-instances-of-functors-et-al">Types and instances of functors et al.</h2>
 <ul>
 <li><code>map :: (a -&gt; b) -&gt; [a] -&gt; [b]</code>, literally <code>fmap</code> but just for lists :@1</li>
 <li><code>fmap :: (a -&gt; b) -&gt; f a -&gt; f b</code>, where f is a functor :@2</li>
@@ -259,7 +400,8 @@ type to also be part of the Eq typeclass. Note the Maybe is a type constructor.<
 <h2 id="kinds">Kinds</h2>
 <p><a href="https://en.wikipedia.org/wiki/Kind_(type_theory)">Few languages</a>
 have type systems that allow access to higher-kinded types (e.g. Monads).
-Haskell lets you see the kinds of types too.</p>
+Haskell lets you see the kinds of types too. I have yet to realise where
+this might be useful.</p>
 <p>Kinds are to types what types are to values. Find out kind of a type with
 <code>:k</code> in GHCi.</p>
 <p><code>*</code> means concrete type:</p>

@@ -19,9 +19,8 @@
       <pubDate>Wed, 07 Oct 2020 22:31:10 +1100</pubDate>
       
       <guid>https://jonjau.github.io/posts/monads-applicatives-and-functors-in-haskell/</guid>
-      <description>This is a brief summary of Chapter 11 and 12 of Learn You a Haskell for Great Good!, a great introduction to functional programming and Haskell. I&amp;rsquo;ve found its explanation of monads, by far the most notorious of category theory jargon (monoids and functors being runner-ups), to be about as intuitive as monad explanations can get.
-This is hardly comprehensive, but here are some notes I made:
-Values Values have types.</description>
+      <description>This is my summary of Chapter 11 and 12 of Learn You a Haskell for Great Good!, a great introduction to functional programming and Haskell. I&amp;rsquo;ve found its explanation of monads, by far the most notorious of category theory jargon (monoids and functors being runner-ups), to be about as intuitive as monad explanations can get.
+This is hardly comprehensive, but these notes touch on most of the main concepts of the Haskell type system (that I&amp;rsquo;m aware of&amp;hellip;).</description>
     </item>
     
     
