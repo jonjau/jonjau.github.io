@@ -45,26 +45,26 @@ explanations can get.</p>
 concepts of the Haskell type system (that I&rsquo;m aware of&hellip;).</p>
 <h2 id="values">Values</h2>
 <p>Values have types. Types can be inferred:</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="nf">x</span> <span class="ow">=</span> <span class="sc">&#39;f&#39;</span>       <span class="c1">-- x has (inferred) type Char</span>
-<span class="nf">y</span> <span class="ow">=</span> <span class="p">[</span><span class="sc">&#39;f&#39;</span><span class="p">,</span><span class="sc">&#39;g&#39;</span><span class="p">]</span> <span class="c1">-- y has (inferred) type [Char], a list of Char&#39;s</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;f&#39;</span>       <span style="color:#75715e">-- x has (inferred) type Char</span>
+<span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;f&#39;</span>,<span style="color:#e6db74">&#39;g&#39;</span>] <span style="color:#75715e">-- y has (inferred) type [Char], a list of Char&#39;s</span>
 </code></pre></div><p>Use <code>:t</code> in <a href="https://docs.haskellstack.org/en/stable/ghci/">GHCi</a>
 to check the type of a value, e.g. <code>:t 'f'</code> will give <code>f :: Char</code>, where
 <code>::</code> can be read as &lsquo;type of&rsquo; or &lsquo;has type&rsquo;. There is also
 <a href="%5Bhoogle.com%5D(https://hoogle.haskell.org)">Hoogle</a>.
 Though Haskell is able to infer types very well, it is good practice that
 top-level definitions are explicitly type-annotated:</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- the type declaration doesn&#39;t have to sit on top of the definition either</span>
-<span class="nf">x</span> <span class="ow">::</span> <span class="kt">Char</span>
-<span class="nf">x</span> <span class="ow">=</span> <span class="sc">&#39;f&#39;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- the type declaration doesn&#39;t have to sit on top of the definition either</span>
+<span style="color:#a6e22e">x</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Char</span>
+<span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;f&#39;</span>
 </code></pre></div><h2 id="functions">Functions</h2>
 <p>Functions map values to values. Since functions themselves are values
 (<a href="https://en.wikipedia.org/wiki/First-class_citizen">&ldquo;first-class citizens&rdquo;</a>),
 they too have types. <code>f :: p -&gt; p</code> can be read as &ldquo;f takes a p and returns a p&rdquo;.</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="nf">f</span> <span class="ow">::</span> <span class="n">p</span> <span class="ow">-&gt;</span> <span class="n">p</span>
-<span class="nf">f</span> <span class="n">x</span> <span class="ow">=</span> <span class="n">x</span>            <span class="c1">-- no-op</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">f</span> <span style="color:#f92672">::</span> p <span style="color:#f92672">-&gt;</span> p
+<span style="color:#a6e22e">f</span> x <span style="color:#f92672">=</span> x            <span style="color:#75715e">-- no-op</span>
 
-<span class="nf">g</span> <span class="ow">::</span> <span class="kt">Eq</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
-<span class="nf">g</span> <span class="n">x</span> <span class="n">y</span> <span class="ow">=</span> <span class="n">x</span> <span class="o">==</span> <span class="n">y</span>      <span class="c1">-- equality, g is pretty much (==)</span>
+<span style="color:#a6e22e">g</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Eq</span> a <span style="color:#f92672">=&gt;</span> a <span style="color:#f92672">-&gt;</span> a <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Bool</span>
+<span style="color:#a6e22e">g</span> x y <span style="color:#f92672">=</span> x <span style="color:#f92672">==</span> y      <span style="color:#75715e">-- equality, g is pretty much (==)</span>
 </code></pre></div><p>The second function <code>g</code> has a type constraint: it takes two arguments of a type
 <code>a</code> that must have properly defined equality, such that it is of the
 typeclass <code>Eq</code> (more on this later), e.g. <code>Int</code>. This is parametric
@@ -73,27 +73,27 @@ polymorphism, with especially lightweight syntax.</p>
 <a href="https://en.wikipedia.org/wiki/Currying">curried</a> (like partial application,
 but one argument at at time) &ndash; a function that takes two arguments, like <code>g</code>,
 is still a valid function when only one of its arguments is given:</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- (g 3) is a function that expects one argument, and returns true if it equals</span>
-<span class="c1">-- 3 and false otherwise. This returns all the items equal to 3 in the list:</span>
-<span class="nf">filter</span> <span class="p">(</span><span class="n">g</span> <span class="mi">3</span><span class="p">)</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="c1">-- evaluates to [3,3]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- (g 3) is a function that expects one argument, and returns true if it equals</span>
+<span style="color:#75715e">-- 3 and false otherwise. This returns all the items equal to 3 in the list:</span>
+<span style="color:#a6e22e">filter</span> (g <span style="color:#ae81ff">3</span>) [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">3</span>] <span style="color:#75715e">-- evaluates to [3,3]</span>
 </code></pre></div><h2 id="defining-data-types">Defining (data) types</h2>
 <p><code>data</code> defines an algebraic data type
 (<a href="https://en.wikipedia.org/wiki/Algebraic_data_type">ADT</a>):</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="kr">data</span> <span class="kt">TrafficLight</span> <span class="ow">=</span> <span class="kt">Red</span> <span class="o">|</span> <span class="kt">Yellow</span> <span class="o">|</span> <span class="kt">Green</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">TrafficLight</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Red</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Yellow</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Green</span>
 
-<span class="c1">-- the value of type Person may be constructed with: Person &#34;bob&#34; 9</span>
-<span class="kr">data</span> <span class="kt">Person</span> <span class="ow">=</span> <span class="kt">Person</span> <span class="kt">String</span> <span class="kt">Int</span>
+<span style="color:#75715e">-- the value of type Person may be constructed with: Person &#34;bob&#34; 9</span>
+<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">Person</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Person</span> <span style="color:#66d9ef">String</span> <span style="color:#66d9ef">Int</span>
 </code></pre></div><p>On the left is the name of the type, and on the right are data constructors
 (or type constructors). Type constructors are like functions: they may take
 parameters and are automatically curried. Types may have the same name as
 their data constructor(s). Note that type constructors do not have a function
 body), they simply construct types.</p>
 <p><code>newtype</code> defines new types out of existing data types:</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- this is record syntax in Haskell</span>
-<span class="kr">data</span> <span class="kt">ZipList</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">ZipList</span> <span class="p">{</span> <span class="n">getZipList</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="p">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- this is record syntax in Haskell</span>
+<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">ZipList</span> a <span style="color:#f92672">=</span> <span style="color:#66d9ef">ZipList</span> { getZipList <span style="color:#f92672">::</span> [a] }
 
-<span class="c1">-- faster (no wrapping/unwrapping overhead) and equivalent:</span>
-<span class="kr">newtype</span> <span class="kt">ZipList</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">ZipList</span> <span class="p">{</span> <span class="n">getZipList</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="p">}</span>
+<span style="color:#75715e">-- faster (no wrapping/unwrapping overhead) and equivalent:</span>
+<span style="color:#66d9ef">newtype</span> <span style="color:#66d9ef">ZipList</span> a <span style="color:#f92672">=</span> <span style="color:#66d9ef">ZipList</span> { getZipList <span style="color:#f92672">::</span> [a] }
 </code></pre></div><p>It was made exactly for cases when we want to just take one type and
 wrap it in something to present it as another type.
 <code>data</code> can only and should be replaced with <code>newtype</code> if the type has exactly
@@ -101,28 +101,28 @@ one constructor with exactly one field inside it. Contrast this with:</p>
 <h2 id="type-synonyms">Type synonyms</h2>
 <p><code>type</code> defines a type alias. Wherever one can be used, the other can
 take its place. No data constructor is defined.</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="kr">type</span> <span class="kt">MyStr</span> <span class="ow">=</span> <span class="kt">String</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">type</span> <span style="color:#66d9ef">MyStr</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">String</span>
 </code></pre></div><h2 id="typeclasses">Typeclasses</h2>
 <p>A typeclass takes a type variable and describes what can be done to it;
 typeclasses are like interfaces.</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- What does it mean to have well-defined equality?</span>
-<span class="c1">-- It must define the following functions:</span>
-<span class="kr">class</span> <span class="kt">Eq</span> <span class="n">a</span> <span class="kr">where</span>
-    <span class="p">(</span><span class="o">==</span><span class="p">)</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
-    <span class="p">(</span><span class="o">/=</span><span class="p">)</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
-    <span class="n">x</span> <span class="o">==</span> <span class="n">y</span> <span class="ow">=</span> <span class="n">not</span> <span class="p">(</span><span class="n">x</span> <span class="o">/=</span> <span class="n">y</span><span class="p">)</span>    <span class="c1">-- this is the default implementation for (==)</span>
-    <span class="n">x</span> <span class="o">/=</span> <span class="n">y</span> <span class="ow">=</span> <span class="n">not</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span>    <span class="c1">-- and for (/=), note the indirect recursion.</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- What does it mean to have well-defined equality?</span>
+<span style="color:#75715e">-- It must define the following functions:</span>
+<span style="color:#66d9ef">class</span> <span style="color:#66d9ef">Eq</span> a <span style="color:#66d9ef">where</span>
+    (<span style="color:#f92672">==</span>) <span style="color:#f92672">::</span> a <span style="color:#f92672">-&gt;</span> a <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Bool</span>
+    (<span style="color:#f92672">/=</span>) <span style="color:#f92672">::</span> a <span style="color:#f92672">-&gt;</span> a <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Bool</span>
+    x <span style="color:#f92672">==</span> y <span style="color:#f92672">=</span> not (x <span style="color:#f92672">/=</span> y)    <span style="color:#75715e">-- this is the default implementation for (==)</span>
+    x <span style="color:#f92672">/=</span> y <span style="color:#f92672">=</span> not (x <span style="color:#f92672">==</span> y)    <span style="color:#75715e">-- and for (/=), note the indirect recursion.</span>
 </code></pre></div><p>typeclasses allow for polymorphism:</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- constraints check out: works for any type a that is an instance of Eq</span>
-<span class="nf">equal</span> <span class="ow">::</span> <span class="kt">Eq</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
-<span class="nf">equal</span> <span class="n">x</span> <span class="n">y</span> <span class="ow">=</span> <span class="n">x</span> <span class="o">==</span> <span class="n">y</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- constraints check out: works for any type a that is an instance of Eq</span>
+<span style="color:#a6e22e">equal</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Eq</span> a <span style="color:#f92672">=&gt;</span> a <span style="color:#f92672">-&gt;</span> a <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Bool</span>
+<span style="color:#a6e22e">equal</span> x y <span style="color:#f92672">=</span> x <span style="color:#f92672">==</span> y
 </code></pre></div><p>types can be made instances of typeclasses:</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- How does a TrafficLight have well-defined equality?</span>
-<span class="kr">instance</span> <span class="kt">Eq</span> <span class="kt">TrafficLight</span> <span class="kr">where</span>
-    <span class="kt">Red</span> <span class="o">==</span> <span class="kt">Red</span> <span class="ow">=</span> <span class="kt">True</span>
-    <span class="kt">Green</span> <span class="o">==</span> <span class="kt">Green</span> <span class="ow">=</span> <span class="kt">True</span>
-    <span class="kt">Yellow</span> <span class="o">==</span> <span class="kt">Yellow</span> <span class="ow">=</span> <span class="kt">True</span>
-    <span class="kr">_</span> <span class="o">==</span> <span class="kr">_</span> <span class="ow">=</span> <span class="kt">False</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- How does a TrafficLight have well-defined equality?</span>
+<span style="color:#66d9ef">instance</span> <span style="color:#66d9ef">Eq</span> <span style="color:#66d9ef">TrafficLight</span> <span style="color:#66d9ef">where</span>
+    <span style="color:#66d9ef">Red</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">Red</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+    <span style="color:#66d9ef">Green</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">Green</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+    <span style="color:#66d9ef">Yellow</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">Yellow</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+    <span style="color:#66d9ef">_</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">_</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
 </code></pre></div><blockquote>
 <p>If you want to see what the instances of a typeclass are, just do <code>:info</code>
 (or <code>:i</code>) on a typeclass in GHCI. Typing <code>:info Num</code> will show which
@@ -142,11 +142,11 @@ Any number multiplied by 1 is itself, and appending the empty list to any
 list yields the list. So <code>1</code> and <code>[]</code> are <code>mempty</code>s and <code>*</code> and <code>++</code> are
 <code>mappend</code>s for the <code>Num</code> and <code>[]</code> monoids, respectively.</p>
 </blockquote>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="kr">class</span> <span class="kt">Monoid</span> <span class="n">m</span> <span class="kr">where</span>
-    <span class="n">mempty</span> <span class="ow">::</span> <span class="n">m</span> <span class="c1">-- polymorphic constant: the identity value (e.g. 1 w.r.t *)</span>
-    <span class="n">mappend</span> <span class="ow">::</span> <span class="n">m</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="c1">-- takes two monoid values and returns a third</span>
-    <span class="n">mconcat</span> <span class="ow">::</span> <span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="n">m</span>
-    <span class="n">mconcat</span> <span class="ow">=</span> <span class="n">foldr</span> <span class="n">mappend</span> <span class="n">mempty</span> <span class="c1">-- default implementation!</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">class</span> <span style="color:#66d9ef">Monoid</span> m <span style="color:#66d9ef">where</span>
+    mempty <span style="color:#f92672">::</span> m <span style="color:#75715e">-- polymorphic constant: the identity value (e.g. 1 w.r.t *)</span>
+    mappend <span style="color:#f92672">::</span> m <span style="color:#f92672">-&gt;</span> m <span style="color:#f92672">-&gt;</span> m <span style="color:#75715e">-- takes two monoid values and returns a third</span>
+    mconcat <span style="color:#f92672">::</span> [m] <span style="color:#f92672">-&gt;</span> m
+    mconcat <span style="color:#f92672">=</span> foldr mappend mempty <span style="color:#75715e">-- default implementation!</span>
 </code></pre></div><p>Monoid laws (surrounding a function with backticks (`) allows infix calling):</p>
 <ul>
 <li>mempty `mappend` x = x</li>
@@ -188,13 +188,13 @@ The computational context here is the &ldquo;optionality&rdquo;.</li>
 <p>A <code>Maybe a</code> is either a <code>Just a</code> or a <code>Nothing</code> &ndash; it has two data
 constructors.</p>
 </blockquote>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- these two expressions are equivalent, they both evaluate to [4,5,6,7,8]</span>
-<span class="nf">fmap</span> <span class="p">(</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
-<span class="p">(</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="o">&lt;$&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- these two expressions are equivalent, they both evaluate to [4,5,6,7,8]</span>
+<span style="color:#a6e22e">fmap</span> (<span style="color:#f92672">+</span><span style="color:#ae81ff">3</span>) [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">5</span>]
+(<span style="color:#f92672">+</span><span style="color:#ae81ff">3</span>) <span style="color:#f92672">&lt;$&gt;</span> [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">5</span>]
 
-<span class="c1">-- a Maybe supports mapping (+3), a normal function as follows:</span>
-<span class="nf">fmap</span> <span class="p">(</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="kt">Just</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">-- evaluates to (Just 8)</span>
-<span class="p">(</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="o">&lt;$&gt;</span> <span class="kt">Nothing</span>   <span class="c1">-- evaluates to Nothing</span>
+<span style="color:#75715e">-- a Maybe supports mapping (+3), a normal function as follows:</span>
+<span style="color:#a6e22e">fmap</span> (<span style="color:#f92672">+</span><span style="color:#ae81ff">3</span>) (<span style="color:#66d9ef">Just</span> <span style="color:#ae81ff">5</span>) <span style="color:#75715e">-- evaluates to (Just 8)</span>
+(<span style="color:#f92672">+</span><span style="color:#ae81ff">3</span>) <span style="color:#f92672">&lt;$&gt;</span> <span style="color:#66d9ef">Nothing</span>   <span style="color:#75715e">-- evaluates to Nothing</span>
 </code></pre></div><blockquote>
 <p>Note how the values end up inside the context (wrapped in the List/Maybe).
 In general there is not a nice function you can use to recover the <code>a</code> once
@@ -236,14 +236,14 @@ and extracts the function from the first functor and maps it over the
 second one.</li>
 </ul>
 </blockquote>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- mapping functions in a functor over values in a functor</span>
-<span class="c1">-- (the same type of functor!)</span>
-<span class="p">[(</span><span class="o">+</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="p">),</span> <span class="p">(</span><span class="o">^</span><span class="mi">2</span><span class="p">)]</span> <span class="o">&lt;*&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="c1">-- [4,5,6,7,0,-1,-2,-3,1,4,9,16]</span>
-<span class="p">[(</span><span class="o">==</span><span class="mi">3</span><span class="p">)]</span> <span class="o">&lt;*&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>            <span class="c1">-- [False, False, True, False]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- mapping functions in a functor over values in a functor</span>
+<span style="color:#75715e">-- (the same type of functor!)</span>
+[(<span style="color:#f92672">+</span><span style="color:#ae81ff">3</span>), (<span style="color:#ae81ff">1</span><span style="color:#f92672">-</span>), (<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span>)] <span style="color:#f92672">&lt;*&gt;</span> [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">4</span>] <span style="color:#75715e">-- [4,5,6,7,0,-1,-2,-3,1,4,9,16]</span>
+[(<span style="color:#f92672">==</span><span style="color:#ae81ff">3</span>)] <span style="color:#f92672">&lt;*&gt;</span> [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">4</span>]            <span style="color:#75715e">-- [False, False, True, False]</span>
 
-<span class="p">(</span><span class="kt">Just</span> <span class="p">(</span><span class="o">+</span><span class="mi">3</span><span class="p">))</span> <span class="o">&lt;*&gt;</span> <span class="kt">Nothing</span>    <span class="c1">-- Nothing</span>
-<span class="p">(</span><span class="kt">Just</span> <span class="p">(</span><span class="mi">3</span><span class="o">-</span><span class="p">))</span> <span class="o">&lt;*&gt;</span> <span class="p">(</span><span class="kt">Just</span> <span class="p">(</span><span class="mi">7</span><span class="p">))</span> <span class="c1">-- Just (-4)</span>
-<span class="kt">Nothing</span> <span class="o">&lt;*&gt;</span> <span class="kt">Nothing</span>        <span class="c1">-- Nothing</span>
+(<span style="color:#66d9ef">Just</span> (<span style="color:#f92672">+</span><span style="color:#ae81ff">3</span>)) <span style="color:#f92672">&lt;*&gt;</span> <span style="color:#66d9ef">Nothing</span>    <span style="color:#75715e">-- Nothing</span>
+(<span style="color:#66d9ef">Just</span> (<span style="color:#ae81ff">3</span><span style="color:#f92672">-</span>)) <span style="color:#f92672">&lt;*&gt;</span> (<span style="color:#66d9ef">Just</span> (<span style="color:#ae81ff">7</span>)) <span style="color:#75715e">-- Just (-4)</span>
+<span style="color:#66d9ef">Nothing</span> <span style="color:#f92672">&lt;*&gt;</span> <span style="color:#66d9ef">Nothing</span>        <span style="color:#75715e">-- Nothing</span>
 </code></pre></div><p>Applicative functor laws (this is where the analogies fall apart):</p>
 <ol>
 <li><code>pure id &lt;*&gt; v = v</code></li>
@@ -277,22 +277,22 @@ when dealing with IO operations, which are inherently
 are clearly in laid out in the type system, they are not really side effects,
 and this makes the whole program easier to reason with. It is said that this
 makes Haskell a purely functional language still.</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- we can finally write Hello World :)</span>
-<span class="c1">-- f &gt;&gt; g is the same as f &gt;&gt;= \_ -&gt; g</span>
-<span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
-<span class="nf">main</span> <span class="ow">=</span>
-    <span class="n">putStr</span> <span class="s">&#34;Hello&#34;</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="kr">_</span> <span class="ow">-&gt;</span>
-        <span class="n">putStr</span> <span class="s">&#34; ...World&#34;</span> <span class="o">&gt;&gt;</span>
-            <span class="n">putStrLn</span> <span class="s">&#34;in Haskell&#34;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- we can finally write Hello World :)</span>
+<span style="color:#75715e">-- f &gt;&gt; g is the same as f &gt;&gt;= \_ -&gt; g</span>
+<span style="color:#a6e22e">main</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">IO</span> ()
+<span style="color:#a6e22e">main</span> <span style="color:#f92672">=</span>
+    putStr <span style="color:#e6db74">&#34;Hello&#34;</span> <span style="color:#f92672">&gt;&gt;=</span> <span style="color:#a6e22e">\</span><span style="color:#66d9ef">_</span> <span style="color:#f92672">-&gt;</span>
+        putStr <span style="color:#e6db74">&#34; ...World&#34;</span> <span style="color:#f92672">&gt;&gt;</span>
+            putStrLn <span style="color:#e6db74">&#34;in Haskell&#34;</span>
 
-<span class="c1">-- demonstrating the I in IO, as well as monad syntax:</span>
-<span class="c1">-- a function that fetches user input, prints it out and returns it.</span>
-<span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="kt">String</span>
-<span class="nf">main</span> <span class="ow">=</span>
-    <span class="n">putStrLn</span> <span class="s">&#34;Who?&#34;</span> <span class="o">&gt;&gt;</span>
-        <span class="n">getLine</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">name</span> <span class="ow">-&gt;</span>
-            <span class="n">putStrLn</span> <span class="p">(</span><span class="s">&#34;Oh Hello &#34;</span> <span class="o">++</span> <span class="n">name</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
-                <span class="n">return</span> <span class="n">name</span>
+<span style="color:#75715e">-- demonstrating the I in IO, as well as monad syntax:</span>
+<span style="color:#75715e">-- a function that fetches user input, prints it out and returns it.</span>
+<span style="color:#a6e22e">main</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">IO</span> <span style="color:#66d9ef">String</span>
+<span style="color:#a6e22e">main</span> <span style="color:#f92672">=</span>
+    putStrLn <span style="color:#e6db74">&#34;Who?&#34;</span> <span style="color:#f92672">&gt;&gt;</span>
+        getLine <span style="color:#f92672">&gt;&gt;=</span> <span style="color:#a6e22e">\</span>name <span style="color:#f92672">-&gt;</span>
+            putStrLn (<span style="color:#e6db74">&#34;Oh Hello &#34;</span> <span style="color:#f92672">++</span> name) <span style="color:#f92672">&gt;&gt;</span>
+                return name
 </code></pre></div><p>The distinction with applicative functors is very slight.
 <strong>Most common functors are applicative and are monads</strong>, e.g.
 <code>[]</code>, <code>Maybe</code>, <code>State</code>, <code>IO</code></p>
@@ -300,35 +300,35 @@ makes Haskell a purely functional language still.</p>
 are syntactic sugar to deal with monads, to do away with nesting. See below.</p>
 <h2 id="syntax">Syntax</h2>
 <p>To make a point about the syntax, all of these functions are exactly equivalent:</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- list comprehension</span>
-<span class="c1">-- lists get their own special shorthand syntax, comprehensions like in Python.</span>
-<span class="nf">e1</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="kt">Int</span><span class="p">)]</span>
-<span class="nf">e1</span> <span class="n">lst</span> <span class="ow">=</span>
-    <span class="kr">let</span> <span class="n">c</span> <span class="ow">=</span> <span class="mi">3</span>
-    <span class="kr">in</span>  <span class="p">[(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">c</span><span class="p">)</span> <span class="o">|</span> <span class="n">x</span> <span class="ow">&lt;-</span> <span class="n">lst</span><span class="p">,</span> <span class="n">y</span> <span class="ow">&lt;-</span> <span class="n">lst</span><span class="p">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- list comprehension</span>
+<span style="color:#75715e">-- lists get their own special shorthand syntax, comprehensions like in Python.</span>
+<span style="color:#a6e22e">e1</span> <span style="color:#f92672">::</span> [a] <span style="color:#f92672">-&gt;</span> [(a,a,<span style="color:#66d9ef">Int</span>)]
+<span style="color:#a6e22e">e1</span> lst <span style="color:#f92672">=</span>
+    <span style="color:#66d9ef">let</span> c <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+    <span style="color:#66d9ef">in</span>  [(x,y,c) <span style="color:#f92672">|</span> x <span style="color:#f92672">&lt;-</span> lst, y <span style="color:#f92672">&lt;-</span> lst]
 
-<span class="c1">-- do-block: &#34;implicit&#34; (&gt;&gt;=)&#39;s</span>
-<span class="nf">e2</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="kt">Int</span><span class="p">)]</span>
-<span class="nf">e2</span> <span class="n">lst</span> <span class="ow">=</span> <span class="kr">do</span>
-    <span class="n">x</span> <span class="ow">&lt;-</span> <span class="n">lst</span>
-    <span class="n">y</span> <span class="ow">&lt;-</span> <span class="n">lst</span>
-    <span class="kr">let</span> <span class="n">c</span> <span class="ow">=</span> <span class="mi">3</span>
-    <span class="n">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+<span style="color:#75715e">-- do-block: &#34;implicit&#34; (&gt;&gt;=)&#39;s</span>
+<span style="color:#a6e22e">e2</span> <span style="color:#f92672">::</span> [a] <span style="color:#f92672">-&gt;</span> [(a,a,<span style="color:#66d9ef">Int</span>)]
+<span style="color:#a6e22e">e2</span> lst <span style="color:#f92672">=</span> <span style="color:#66d9ef">do</span>
+    x <span style="color:#f92672">&lt;-</span> lst
+    y <span style="color:#f92672">&lt;-</span> lst
+    <span style="color:#66d9ef">let</span> c <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+    return (x,y,c)
 
-<span class="c1">-- sugarless: binding monadic operations explicitly</span>
-<span class="nf">e3</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="kt">Int</span><span class="p">)]</span>
-<span class="nf">e3</span> <span class="n">lst</span> <span class="ow">=</span>
-    <span class="kr">let</span> <span class="n">c</span> <span class="ow">=</span> <span class="mi">3</span> <span class="kr">in</span>
-    <span class="n">lst</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">x</span> <span class="ow">-&gt;</span>
-        <span class="n">lst</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">y</span> <span class="ow">-&gt;</span>
-            <span class="n">pure</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+<span style="color:#75715e">-- sugarless: binding monadic operations explicitly</span>
+<span style="color:#a6e22e">e3</span> <span style="color:#f92672">::</span> [a] <span style="color:#f92672">-&gt;</span> [(a,a,<span style="color:#66d9ef">Int</span>)]
+<span style="color:#a6e22e">e3</span> lst <span style="color:#f92672">=</span>
+    <span style="color:#66d9ef">let</span> c <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span> <span style="color:#66d9ef">in</span>
+    lst <span style="color:#f92672">&gt;&gt;=</span> <span style="color:#a6e22e">\</span>x <span style="color:#f92672">-&gt;</span>
+        lst <span style="color:#f92672">&gt;&gt;=</span> <span style="color:#a6e22e">\</span>y <span style="color:#f92672">-&gt;</span>
+            pure (x,y,c)
 
-<span class="c1">-- maximum golf: remember (&lt;*&gt;) :: Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b</span>
-<span class="c1">-- implicitly the &lt;$&gt; bit is evaluated first to get a list of functions.</span>
-<span class="nf">e4</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="kt">Int</span><span class="p">)]</span>
-<span class="nf">e4</span> <span class="n">lst</span> <span class="ow">=</span>
-    <span class="kr">let</span> <span class="n">c</span> <span class="ow">=</span> <span class="mi">3</span> <span class="kr">in</span>
-    <span class="p">(</span><span class="nf">\</span><span class="n">x</span> <span class="n">y</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">c</span><span class="p">))</span> <span class="o">&lt;$&gt;</span> <span class="n">lst</span> <span class="o">&lt;*&gt;</span> <span class="n">lst</span>
+<span style="color:#75715e">-- maximum golf: remember (&lt;*&gt;) :: Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b</span>
+<span style="color:#75715e">-- implicitly the &lt;$&gt; bit is evaluated first to get a list of functions.</span>
+<span style="color:#a6e22e">e4</span> <span style="color:#f92672">::</span> [a] <span style="color:#f92672">-&gt;</span> [(a,a,<span style="color:#66d9ef">Int</span>)]
+<span style="color:#a6e22e">e4</span> lst <span style="color:#f92672">=</span>
+    <span style="color:#66d9ef">let</span> c <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span> <span style="color:#66d9ef">in</span>
+    (<span style="color:#a6e22e">\</span>x y <span style="color:#f92672">-&gt;</span> (x,y,c)) <span style="color:#f92672">&lt;$&gt;</span> lst <span style="color:#f92672">&lt;*&gt;</span> lst
 </code></pre></div><h2 id="types-and-instances-of-functors-et-al">Types and instances of functors et al.</h2>
 <ul>
 <li><code>map :: (a -&gt; b) -&gt; [a] -&gt; [b]</code>, literally <code>fmap</code> but just for lists :@1</li>
@@ -341,50 +341,50 @@ are syntactic sugar to deal with monads, to do away with nesting. See below.</p>
 <li><code>return :: a -&gt; m a</code>, where m is a monad</li>
 </ul>
 <p>@1: equivalent <code>do</code> block:</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="kr">do</span> <span class="n">f</span> <span class="ow">&lt;-</span> <span class="n">fs</span>
-   <span class="n">m</span> <span class="ow">&lt;-</span> <span class="n">ms</span>
-   <span class="n">pure</span> <span class="p">(</span><span class="n">f</span> <span class="o">&lt;$&gt;</span> <span class="n">m</span><span class="p">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">do</span> f <span style="color:#f92672">&lt;-</span> fs
+   m <span style="color:#f92672">&lt;-</span> ms
+   pure (f <span style="color:#f92672">&lt;$&gt;</span> m)
 </code></pre></div><p>@2: <a href="https://wiki.haskell.org/Lifting">&ldquo;lifting&rdquo;</a>:
 <code>(-&gt;)</code> is right-applicative, so
 <code>fmap :: (a -&gt; b) -&gt; (f a -&gt; f b)</code> is equivalent, and emphasises the &ldquo;lift&rdquo;,
 likewise for <code>pure</code> et al.</p>
 <p>this is how lists are instances of Functor:</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- [] here is A TYPE CONSTRUCTOR, i.e. the f in Functor f</span>
-<span class="c1">-- not the literal for an empty list.</span>
-<span class="kr">instance</span> <span class="kt">Functor</span> <span class="kt">[]</span> <span class="kr">where</span>
-    <span class="n">fmap</span> <span class="ow">=</span> <span class="n">map</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- [] here is A TYPE CONSTRUCTOR, i.e. the f in Functor f</span>
+<span style="color:#75715e">-- not the literal for an empty list.</span>
+<span style="color:#66d9ef">instance</span> <span style="color:#66d9ef">Functor</span> <span style="color:#66d9ef">[]</span> <span style="color:#66d9ef">where</span>
+    fmap <span style="color:#f92672">=</span> map
 </code></pre></div><p>and Maybe:</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="kr">instance</span> <span class="kt">Functor</span> <span class="kt">Maybe</span> <span class="kr">where</span>
-    <span class="n">fmap</span> <span class="n">f</span> <span class="p">(</span><span class="kt">Just</span> <span class="n">x</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">Just</span> <span class="p">(</span><span class="n">f</span> <span class="n">x</span><span class="p">)</span>
-    <span class="n">fmap</span> <span class="n">f</span> <span class="kt">Nothing</span> <span class="ow">=</span> <span class="kt">Nothing</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">instance</span> <span style="color:#66d9ef">Functor</span> <span style="color:#66d9ef">Maybe</span> <span style="color:#66d9ef">where</span>
+    fmap f (<span style="color:#66d9ef">Just</span> x) <span style="color:#f92672">=</span> <span style="color:#66d9ef">Just</span> (f x)
+    fmap f <span style="color:#66d9ef">Nothing</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Nothing</span>
 </code></pre></div><p>and Either:</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="kr">data</span> <span class="kt">Either</span> <span class="n">a</span> <span class="n">b</span> <span class="ow">=</span> <span class="kt">Left</span> <span class="n">a</span> <span class="o">|</span> <span class="kt">Right</span> <span class="n">b</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">Either</span> a b <span style="color:#f92672">=</span> <span style="color:#66d9ef">Left</span> a <span style="color:#f92672">|</span> <span style="color:#66d9ef">Right</span> b
 
-<span class="kr">instance</span> <span class="kt">Functor</span> <span class="p">(</span><span class="kt">Either</span> <span class="n">a</span><span class="p">)</span> <span class="kr">where</span>
-    <span class="n">fmap</span> <span class="n">f</span> <span class="p">(</span><span class="kt">Right</span> <span class="n">x</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">Right</span> <span class="p">(</span><span class="n">f</span> <span class="n">x</span><span class="p">)</span>
-    <span class="n">fmap</span> <span class="n">f</span> <span class="p">(</span><span class="kt">Left</span> <span class="n">x</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">Left</span> <span class="n">x</span>
+<span style="color:#66d9ef">instance</span> <span style="color:#66d9ef">Functor</span> (<span style="color:#66d9ef">Either</span> a) <span style="color:#66d9ef">where</span>
+    fmap f (<span style="color:#66d9ef">Right</span> x) <span style="color:#f92672">=</span> <span style="color:#66d9ef">Right</span> (f x)
+    fmap f (<span style="color:#66d9ef">Left</span> x) <span style="color:#f92672">=</span> <span style="color:#66d9ef">Left</span> x
 </code></pre></div><p><code>Either a</code> is a type constructor that takes 1 parameter, which is what the
 Functor typeclass expects.</p>
 <p>Functions are in fact monads too:</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="kr">instance</span> <span class="kt">Applicative</span> <span class="p">((</span><span class="ow">-&gt;</span><span class="p">)</span> <span class="n">r</span><span class="p">)</span> <span class="kr">where</span>
-    <span class="n">pure</span> <span class="n">x</span> <span class="ow">=</span> <span class="p">(</span><span class="nf">\</span><span class="kr">_</span> <span class="ow">-&gt;</span> <span class="n">x</span><span class="p">)</span>
-    <span class="n">f</span> <span class="o">&lt;*&gt;</span> <span class="n">g</span> <span class="ow">=</span> <span class="nf">\</span><span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">x</span> <span class="p">(</span><span class="n">g</span> <span class="n">x</span><span class="p">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">instance</span> <span style="color:#66d9ef">Applicative</span> ((<span style="color:#f92672">-&gt;</span>) r) <span style="color:#66d9ef">where</span>
+    pure x <span style="color:#f92672">=</span> (<span style="color:#a6e22e">\</span><span style="color:#66d9ef">_</span> <span style="color:#f92672">-&gt;</span> x)
+    f <span style="color:#f92672">&lt;*&gt;</span> g <span style="color:#f92672">=</span> <span style="color:#a6e22e">\</span>x <span style="color:#f92672">-&gt;</span> f x (g x)
 
-<span class="nf">ghci</span><span class="o">&gt;</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="o">&lt;$&gt;</span> <span class="p">(</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="o">&lt;*&gt;</span> <span class="p">(</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span> <span class="o">$</span> <span class="mi">5</span>
-<span class="mi">508</span>
+<span style="color:#a6e22e">ghci</span><span style="color:#f92672">&gt;</span> (<span style="color:#f92672">+</span>) <span style="color:#f92672">&lt;$&gt;</span> (<span style="color:#f92672">+</span><span style="color:#ae81ff">3</span>) <span style="color:#f92672">&lt;*&gt;</span> (<span style="color:#f92672">*</span><span style="color:#ae81ff">100</span>) <span style="color:#f92672">$</span> <span style="color:#ae81ff">5</span>
+<span style="color:#ae81ff">508</span>
 </code></pre></div><h2 id="in-action">In action</h2>
 <p>Golfing once again&hellip;</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="c1">-- equivalently:</span>
-<span class="c1">-- getZipList $ fmap (+) (ZipList [1,2,3]) &lt;*&gt; (ZipList [100,10,20])</span>
-<span class="nf">ghci</span><span class="o">&gt;</span> <span class="n">getZipList</span> <span class="o">$</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="o">&lt;$&gt;</span> <span class="kt">ZipList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;*&gt;</span> <span class="kt">ZipList</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">]</span>
-<span class="p">[</span><span class="mi">101</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">23</span><span class="p">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- equivalently:</span>
+<span style="color:#75715e">-- getZipList $ fmap (+) (ZipList [1,2,3]) &lt;*&gt; (ZipList [100,10,20])</span>
+<span style="color:#a6e22e">ghci</span><span style="color:#f92672">&gt;</span> getZipList <span style="color:#f92672">$</span> (<span style="color:#f92672">+</span>) <span style="color:#f92672">&lt;$&gt;</span> <span style="color:#66d9ef">ZipList</span> [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">3</span>] <span style="color:#f92672">&lt;*&gt;</span> <span style="color:#66d9ef">ZipList</span> [<span style="color:#ae81ff">100</span>,<span style="color:#ae81ff">10</span>,<span style="color:#ae81ff">20</span>]
+[<span style="color:#ae81ff">101</span>, <span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">23</span>]
 
-<span class="c1">-- implicitly, this is (fmap &lt;$&gt; [(+2,(*2))]) &lt;*&gt; [Just 10, Just 20] :@1</span>
-<span class="nf">ghci</span><span class="o">&gt;</span> <span class="n">fmap</span> <span class="o">&lt;$&gt;</span> <span class="p">[(</span><span class="o">+</span><span class="mi">2</span><span class="p">),(</span><span class="o">*</span><span class="mi">2</span><span class="p">)]</span> <span class="o">&lt;*&gt;</span> <span class="p">[</span><span class="kt">Just</span> <span class="mi">10</span><span class="p">,</span> <span class="kt">Just</span> <span class="mi">20</span><span class="p">]</span>
-<span class="p">[</span><span class="kt">Just</span> <span class="mi">12</span><span class="p">,</span><span class="kt">Just</span> <span class="mi">22</span><span class="p">,</span><span class="kt">Just</span> <span class="mi">20</span><span class="p">,</span><span class="kt">Just</span> <span class="mi">40</span><span class="p">]</span>
+<span style="color:#75715e">-- implicitly, this is (fmap &lt;$&gt; [(+2,(*2))]) &lt;*&gt; [Just 10, Just 20] :@1</span>
+<span style="color:#a6e22e">ghci</span><span style="color:#f92672">&gt;</span> fmap <span style="color:#f92672">&lt;$&gt;</span> [(<span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>),(<span style="color:#f92672">*</span><span style="color:#ae81ff">2</span>)] <span style="color:#f92672">&lt;*&gt;</span> [<span style="color:#66d9ef">Just</span> <span style="color:#ae81ff">10</span>, <span style="color:#66d9ef">Just</span> <span style="color:#ae81ff">20</span>]
+[<span style="color:#66d9ef">Just</span> <span style="color:#ae81ff">12</span>,<span style="color:#66d9ef">Just</span> <span style="color:#ae81ff">22</span>,<span style="color:#66d9ef">Just</span> <span style="color:#ae81ff">20</span>,<span style="color:#66d9ef">Just</span> <span style="color:#ae81ff">40</span>]
 
-<span class="nf">ghci</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">fmap</span> <span class="p">(</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span> <span class="o">&lt;$&gt;</span> <span class="p">[</span><span class="kt">Just</span> <span class="mi">1</span><span class="p">,</span> <span class="kt">Nothing</span><span class="p">,</span> <span class="kt">Just</span> <span class="mi">3</span><span class="p">]</span>
-<span class="p">[</span><span class="kt">Just</span> <span class="mi">2</span><span class="p">,</span><span class="kt">Nothing</span><span class="p">,</span><span class="kt">Just</span> <span class="mi">6</span><span class="p">]</span>
+<span style="color:#a6e22e">ghci</span><span style="color:#f92672">&gt;</span> (fmap (<span style="color:#f92672">*</span><span style="color:#ae81ff">2</span>)) <span style="color:#f92672">&lt;$&gt;</span> [<span style="color:#66d9ef">Just</span> <span style="color:#ae81ff">1</span>, <span style="color:#66d9ef">Nothing</span>, <span style="color:#66d9ef">Just</span> <span style="color:#ae81ff">3</span>]
+[<span style="color:#66d9ef">Just</span> <span style="color:#ae81ff">2</span>,<span style="color:#66d9ef">Nothing</span>,<span style="color:#66d9ef">Just</span> <span style="color:#ae81ff">6</span>]
 
 </code></pre></div><h2 id="class-constraints">Class constraints</h2>
 <p>Class constraints can appear in (type)class declarations vs instance
@@ -412,8 +412,8 @@ this might be useful.</p>
 <li><code>Either :: * -&gt; * -&gt; *</code></li>
 </ul>
 <p>I haven&rsquo;t quite grasped this, but it&rsquo;s interesting regardless:</p>
-<div class="highlight"><pre class="chroma"><code class="language-haskell" data-lang="haskell"><span class="kr">class</span> <span class="kt">Tofu</span> <span class="n">t</span> <span class="kr">where</span>
-    <span class="n">tofu</span> <span class="ow">::</span> <span class="n">j</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">t</span> <span class="n">a</span> <span class="n">j</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">class</span> <span style="color:#66d9ef">Tofu</span> t <span style="color:#66d9ef">where</span>
+    tofu <span style="color:#f92672">::</span> j a <span style="color:#f92672">-&gt;</span> t a j
 </code></pre></div><p>If <code>t</code> is an instance of <code>Tofu</code>, what would its kind be?</p>
 <ul>
 <li><code>j a</code> is the type of the value of the first parameter of <code>tofu</code>, so

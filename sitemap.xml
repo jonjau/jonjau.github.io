@@ -18,12 +18,17 @@
   </url>
   
   <url>
-    <loc>https://jonjau.github.io/posts/monads-applicatives-and-functors-in-haskell/</loc>
-    <lastmod>2020-10-07T22:31:10+11:00</lastmod>
+    <loc>https://jonjau.github.io/posts/a-sudoku-solver-in-15-lines-of-prolog/</loc>
+    <lastmod>2020-10-26T18:22:55+11:00</lastmod>
   </url>
   
   <url>
     <loc>https://jonjau.github.io/posts/</loc>
+    <lastmod>2020-10-26T18:22:55+11:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jonjau.github.io/posts/monads-applicatives-and-functors-in-haskell/</loc>
     <lastmod>2020-10-07T22:31:10+11:00</lastmod>
   </url>
   

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="a personal website">
+    
+    <link rel="shortcut icon" href="https://jonjau.github.io/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/style.min.css">
+
+    <title>A Sudoku Solver in 15 Lines of Prolog</title>
+</head>
+<body><header id="banner">
+    <h2>
+        <div style="
+        display: inline-block;
+        height: 20px;
+        width: 20px;
+        background-color: #1D7464;
+        "></div>
+        <a href="https://jonjau.github.io">Jonathan Jauhari</a></h2>
+    <nav>
+        <ul>
+            <li>
+                <a href="/posts/" title="posts">posts</a>
+            </li><li>
+                <a href="/projects/" title="projects">projects</a>
+            </li><li>
+                <a href="/about/" title="about">about</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<hr/>
+        <main id="content">
+<article>
+    <header id="post-header">
+        <h1>A Sudoku Solver in 15 Lines of Prolog</h1><time>October 26, 2020</time></header><p>The title says it all. I came across this Prolog code in a lecture recently,
+and it seems to come from <a href="https://www.metalevel.at/sudoku/">here</a>. If this
+isn&rsquo;t peak abstraction, I don&rsquo;t know what is.</p>
+<p>Honestly though, can anyone even claim this is computer code? Seems to me like
+a line-by-line translation from the rules of Sudoku <em>that actually runs</em> (!!).</p>
+<p>I&rsquo;ve added some annotations below &ndash; it really is just precise, plain, English.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-prolog" data-lang="prolog">:- <span style="color:#a6e22e">use_module</span>(<span style="color:#a6e22e">library</span>(<span style="color:#e6db74">clpfd</span>)).                          <span style="color:#75715e">%*</span>
+
+<span style="color:#a6e22e">sudoku</span>(Rows) :-
+    <span style="color:#a6e22e">length</span>(Rows, <span style="color:#ae81ff">9</span>), <span style="color:#a6e22e">maplist</span>(<span style="color:#a6e22e">same_length</span>(Rows), Rows),  <span style="color:#75715e">%1</span>
+    <span style="color:#a6e22e">append</span>(Rows, Vs), Vs <span style="color:#e6db74">ins</span> <span style="color:#ae81ff">1..9</span>,                      <span style="color:#75715e">%2</span>
+    <span style="color:#a6e22e">maplist</span>(<span style="color:#e6db74">all_distinct</span>, Rows),                        <span style="color:#75715e">%3</span>
+    <span style="color:#a6e22e">transpose</span>(Rows, Columns),                           <span style="color:#75715e">%4</span>
+    <span style="color:#a6e22e">maplist</span>(<span style="color:#e6db74">all_distinct</span>, Columns),                     <span style="color:#75715e">%5</span>
+    Rows <span style="color:#f92672">=</span> [A,B,C,D,E,F,G,H,I],
+    <span style="color:#a6e22e">blocks</span>(A, B, C), <span style="color:#a6e22e">blocks</span>(D, E, F), <span style="color:#a6e22e">blocks</span>(G, H, I).  <span style="color:#75715e">%6</span>
+
+<span style="color:#a6e22e">blocks</span>([], [], []).
+<span style="color:#a6e22e">blocks</span>([A,B,C|Bs1], [D,E,F|Bs2], [G,H,I|Bs3]) :-        <span style="color:#75715e">%7</span>
+    <span style="color:#a6e22e">all_distinct</span>([A,B,C,D,E,F,G,H,I]),
+    <span style="color:#a6e22e">blocks</span>(Bs1, Bs2, Bs3).
+</code></pre></div><p>* This is the secret sauce:
+<a href="http://pathwayslms.com/swipltuts/clpfd/clpfd.html">Constraint Logic Programming over Finite Domains</a>,
+which is as far as I know, needed for the <code>Vs ins 1..9</code> bit.</p>
+<p>A list of lists <code>Rows</code> is a solved Sudoku puzzle when all of these statements
+hold:</p>
+<ol>
+<li>There are 9 rows, each row is 9 elements long, i.e. the board is square.</li>
+<li>The concatenation of the rows (that is, the entire board) only contains
+numbers 1 to 9.</li>
+<li>In each row the values contained are distinct.</li>
+<li>Columns are the rows of the board transposed.</li>
+<li>In each column the values contained are distinct.</li>
+<li>Letting the rows from the first to the ninth be named A to I,
+Rows A,B,C, and D,E,F, and G,H,I form &ldquo;blocks&rdquo;.</li>
+<li>Three rows form &ldquo;blocks&rdquo; if the first three values from each of the three
+rows (a 3x3 on the board) altogether contain only distinct values, and
+that this is true for the following group of three values. Three empty rows
+are considered to form &ldquo;blocks&rdquo;.</li>
+</ol>
+<p>If only project specifications in the real world were as precise as
+logic puzzles!</p>
+<p>Essentially, you define what makes a solution a solution, and Prolog
+(at least, in the interactive <code>swipl</code> prompt) will:</p>
+<ul>
+<li>If given a complete solution, verify that it truly is a solution
+(outputting true if so, false otherwise).</li>
+<li>If given a partial solution, try different
+variable bindings to make it a correct solution (outputting each set of
+such bindings).
+If it fails in doing so, it spits out false.</li>
+<li>If given nothing i.e. an unbound variable, binds that variable to all the
+possible completed Sudoku puzzles (maybe not in the way you expect,
+<code>swipl</code> showed them &ldquo;bound&rdquo; in terms of variables, not numbers).</li>
+</ul>
+<h2 id="running-the-code">Running the code</h2>
+<p>Sure enough it actually runs. In a vanilla
+<a href="https://www.swi-prolog.org/">SWI-Prolog</a> session:</p>
+<pre><code class="language-_" data-lang="_">(manually formatted swipl output)
+
+?- Puzzle=[[5,3,_, _,7,_, _,_,_],
+|          [6,_,_, 1,9,5, _,_,_],
+|          [_,9,8, _,_,_, _,6,_],
+|
+|          [8,_,_, _,6,_, _,_,3],
+|          [4,_,_, 8,_,3, _,_,1],
+|          [7,_,_, _,2,_, _,_,6],
+|
+|          [_,6,_, _,_,_, 2,8,_],
+|          [_,_,_, 4,1,9, _,_,5],
+|          [_,_,_, _,8,_, _,7,9]],
+|    sudoku(Puzzle),
+|    write(Puzzle).
+[[5,3,4, 6,7,8, 9,1,2],
+ [6,7,2, 1,9,5, 3,4,8],
+ [1,9,8, 3,4,2, 5,6,7],
+
+ [8,5,9, 7,6,1, 4,2,3],
+ [4,2,6, 8,5,3, 7,9,1],
+ [7,1,3, 9,2,4, 8,5,6],
+
+ [9,6,1, 5,3,7, 2,8,4],
+ [2,8,7, 4,1,9, 6,3,5],
+ [3,4,5, 2,8,6, 1,7,9]]
+Puzzle=(omitted)
+</code></pre></article>
+
+        </main><footer id="footer">
+    Copyright © 2020 Jonathan Jauhari
+</footer>
+</body>
+</html>

@@ -6,11 +6,24 @@
     <description>Recent content in Posts on Jonathan Jauhari</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Wed, 07 Oct 2020 22:31:10 +1100</lastBuildDate>
+    <lastBuildDate>Mon, 26 Oct 2020 18:22:55 +1100</lastBuildDate>
     
 	<atom:link href="https://jonjau.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
+    
+    
+    
+    <item>
+      <title>A Sudoku Solver in 15 Lines of Prolog</title>
+      <link>https://jonjau.github.io/posts/a-sudoku-solver-in-15-lines-of-prolog/</link>
+      <pubDate>Mon, 26 Oct 2020 18:22:55 +1100</pubDate>
+      
+      <guid>https://jonjau.github.io/posts/a-sudoku-solver-in-15-lines-of-prolog/</guid>
+      <description>The title says it all. I came across this Prolog code in a lecture recently, and it seems to come from here. If this isn&amp;rsquo;t peak abstraction, I don&amp;rsquo;t know what is.
+Honestly though, can anyone even claim this is computer code? Seems to me like a line-by-line translation from the rules of Sudoku that actually runs (!!).
+I&amp;rsquo;ve added some annotations below &amp;ndash; it really is just precise, plain, English.</description>
+    </item>
     
     
     
