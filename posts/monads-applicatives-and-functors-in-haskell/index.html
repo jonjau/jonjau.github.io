@@ -149,16 +149,17 @@ list yields the list. So <code>1</code> and <code>[]</code> are <code>mempty</co
     mconcat <span style="color:#f92672">=</span> foldr mappend mempty <span style="color:#75715e">-- default implementation!</span>
 </code></pre></div><p>Monoid laws (surrounding a function with backticks (`) allows infix calling):</p>
 <ul>
-<li>mempty `mappend` x = x</li>
-<li>x `mappend` mempty = x</li>
-<li>(x `mappend` y) `mappend` z = x `mappend` (y `mappend` z)</li>
+<li><code>mempty `mappend` x = x</code></li>
+<li><code>x `mappend` mempty = x</code></li>
+<li><code>(x `mappend` y) `mappend` z = x `mappend` (y `mappend` z)</code></li>
 </ul>
 <p>Monoid instances:</p>
 <ul>
-<li>lists are monoids (mempty: [], mappend: (++))</li>
-<li>numbers can be monoids in multiple ways with 0 and +, and 1 and *</li>
-<li>booleans can be monoids in two ways with False and OR (newtype&rsquo;d as <code>Any</code>
-in Data.Monoid), and True and AND (newtype&rsquo;d as <code>All</code> in Data.Monoid).</li>
+<li>lists are monoids, where <code>mempty = []</code>, <code>mappend = (++)</code></li>
+<li>numbers can be monoids in multiple ways with <code>0</code> and <code>+</code>, and <code>1</code> and <code>*</code></li>
+<li>booleans can be monoids in two ways with <code>False</code> and <code>OR</code> (<code>newtype</code>&rsquo;d as <code>Any</code>
+in <code>Data.Monoid</code>), and <code>True</code> and <code>AND</code>
+(<code>newtype</code>&rsquo;d as <code>All</code> in <code>Data.Monoid</code>).</li>
 </ul>
 <h2 id="functors">Functors</h2>
 <p>What can I map functions over? I can map functions over a
@@ -329,10 +330,10 @@ are syntactic sugar to deal with monads, to do away with nesting. See below.</p>
 <span style="color:#a6e22e">e4</span> lst <span style="color:#f92672">=</span>
     <span style="color:#66d9ef">let</span> c <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span> <span style="color:#66d9ef">in</span>
     (<span style="color:#a6e22e">\</span>x y <span style="color:#f92672">-&gt;</span> (x,y,c)) <span style="color:#f92672">&lt;$&gt;</span> lst <span style="color:#f92672">&lt;*&gt;</span> lst
-</code></pre></div><h2 id="types-and-instances-of-functors-et-al">Types and instances of functors et al.</h2>
+</code></pre></div><h2 id="types-and-instances-of-functors-et-al">Types and instances of functors et al</h2>
 <ul>
-<li><code>map :: (a -&gt; b) -&gt; [a] -&gt; [b]</code>, literally <code>fmap</code> but just for lists :@1</li>
-<li><code>fmap :: (a -&gt; b) -&gt; f a -&gt; f b</code>, where f is a functor :@2</li>
+<li><code>map :: (a -&gt; b) -&gt; [a] -&gt; [b]</code>, literally <code>fmap</code> but just for lists</li>
+<li><code>fmap :: (a -&gt; b) -&gt; f a -&gt; f b</code>, where f is a functor :@1</li>
 <li><code>(&lt;$&gt;) :: (a -&gt; b) -&gt; f a -&gt; f b</code>, where f is a functor</li>
 <li><code>pure :: a -&gt; f a</code>, where f is an applicative functor</li>
 <li><code>(&lt;*&gt;) :: f (a -&gt; b) -&gt; f a -&gt; f b</code>, where f is an applicative functor</li>
@@ -340,11 +341,7 @@ are syntactic sugar to deal with monads, to do away with nesting. See below.</p>
 <li><code>(&gt;&gt;) :: m a -&gt; m b -&gt; m b</code>, where m is a monad</li>
 <li><code>return :: a -&gt; m a</code>, where m is a monad</li>
 </ul>
-<p>@1: equivalent <code>do</code> block:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">do</span> f <span style="color:#f92672">&lt;-</span> fs
-   m <span style="color:#f92672">&lt;-</span> ms
-   pure (f <span style="color:#f92672">&lt;$&gt;</span> m)
-</code></pre></div><p>@2: <a href="https://wiki.haskell.org/Lifting">&ldquo;lifting&rdquo;</a>:
+<p><a href="https://wiki.haskell.org/Lifting">&ldquo;lifting&rdquo;</a>:
 <code>(-&gt;)</code> is right-applicative, so
 <code>fmap :: (a -&gt; b) -&gt; (f a -&gt; f b)</code> is equivalent, and emphasises the &ldquo;lift&rdquo;,
 likewise for <code>pure</code> et al.</p>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="a personal website">
+    
+    <link rel="shortcut icon" href="https://jonjau.github.io/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/style.min.css">
+
+    <title>The Visitor pattern for simple collision handling</title>
+</head>
+<body><header id="banner">
+    <h2>
+        <div style="
+        display: inline-block;
+        height: 20px;
+        width: 20px;
+        background-color: #1D7464;
+        "></div>
+        <a href="https://jonjau.github.io">Jonathan Jauhari</a></h2>
+    <nav>
+        <ul>
+            <li>
+                <a href="/posts/" title="posts">posts</a>
+            </li><li>
+                <a href="/projects/" title="projects">projects</a>
+            </li><li>
+                <a href="/about/" title="about">about</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<hr/>
+        <main id="content">
+<article>
+    <header id="post-header">
+        <h1>The Visitor pattern for simple collision handling</h1><time>November 20, 2020</time></header><p>Let&rsquo;s say we were building a system where components can interact with other
+components, and based on the combination of components, different
+kinds of behaviour is to be expected. We must also assume the handled
+interactions are only between pairs.</p>
+<p>A classic example is a pairwise collision system:</p>
+<ul>
+<li>Adventurers and beasts are creatures.</li>
+<li>Adventurers are either knights or archers.</li>
+<li>Beasts are either werewolves or (flying) dragons.</li>
+<li>When adventurers and beasts collide, they fight.</li>
+<li>The way a fight goes is decided by the kind of the adventurer, as well as the
+kind of the beast, e.g. archers shoot dragons, punch werewolves, and
+werewolves disarm knights.</li>
+<li>Knights are particularly polite &ndash; when a pair of knights meet, they loudly
+greet each other.</li>
+</ul>
+<p>We see that we can have well-defined adventurer-beast collisions and
+possibly a knight-knight collision too. To start off, the collision handling
+system shouldn&rsquo;t need to know the class hierarchy and how each
+creature behaves when it hits another, it just needs them to <em>do what they do</em>.
+A simple system might look like this, free of <code>instanceof</code> checks:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Game</span> <span style="color:#f92672">{</span>
+    List<span style="color:#f92672">&lt;</span>Creature<span style="color:#f92672">&gt;</span> cs<span style="color:#f92672">;</span>
+
+    <span style="color:#75715e">// called every turn / game tick
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleCollisions</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Creature c1 <span style="color:#f92672">:</span> cs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            List<span style="color:#f92672">&lt;</span>Creature<span style="color:#f92672">&gt;</span> colliding <span style="color:#f92672">=</span> c1<span style="color:#f92672">.</span><span style="color:#a6e22e">getColliding</span><span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Creature c2 <span style="color:#f92672">:</span> colliding<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                c1<span style="color:#f92672">.</span><span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>c2<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="the-alternative">The alternative</h2>
+<p>In abbreviated Java, an initial design might be:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Creature</span> <span style="color:#f92672">{</span>
+    List<span style="color:#f92672">&lt;</span>Creature<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getColliding</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/*...*/</span> <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Creature c<span style="color:#f92672">)</span> <span style="color:#f92672">{};</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Adventurer</span> <span style="color:#66d9ef">extends</span> Creature <span style="color:#f92672">{}</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Knight</span> <span style="color:#66d9ef">extends</span> Adventurer <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Creature c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#66d9ef">instanceof</span> Knight<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> greet<span style="color:#f92672">((</span>Knight<span style="color:#f92672">)</span> c<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#66d9ef">instanceof</span> Werewolf<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> slash<span style="color:#f92672">((</span>Werewolf<span style="color:#f92672">)</span> c<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#66d9ef">instanceof</span> Dragon<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> taunt<span style="color:#f92672">((</span>Dragon<span style="color:#f92672">)</span> c<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Archer</span> <span style="color:#66d9ef">extends</span> Adventurer <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Creature c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#66d9ef">instanceof</span> Werewolf<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> punch<span style="color:#f92672">((</span>Werewolf<span style="color:#f92672">)</span> c<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#66d9ef">instanceof</span> Dragon<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> shoot<span style="color:#f92672">((</span>Dragon<span style="color:#f92672">)</span> c<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Beast</span> <span style="color:#66d9ef">extends</span> Creature <span style="color:#f92672">{}</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Dragon</span> <span style="color:#66d9ef">extends</span> Beast <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Creature c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#66d9ef">instanceof</span> Knight<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> immolate<span style="color:#f92672">((</span>Knight<span style="color:#f92672">)</span> c<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#66d9ef">instanceof</span> Archer<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> immolate<span style="color:#f92672">((</span>Archer<span style="color:#f92672">)</span> c<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Werewolf</span> <span style="color:#66d9ef">extends</span> Beast <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Creature c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#66d9ef">instanceof</span> Knight<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> disarm<span style="color:#f92672">((</span>Knight<span style="color:#f92672">)</span> c<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#66d9ef">instanceof</span> Archer<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> charge<span style="color:#f92672">((</span>Archer<span style="color:#f92672">)</span> c<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>All we&rsquo;ve really done is push back the <code>instanceof</code> checks into each
+method&rsquo;s implementation. This works.</p>
+<ul>
+<li>Changing/adding new behaviour for existing classes means adding an extra
+<code>instanceof</code> check.</li>
+<li>Adding a new kind of <code>Creature</code> will not affect existing classes, if they
+aren&rsquo;t concerned about the new kind of <code>Creature</code>, they simply don&rsquo;t have
+to handle it in the if-else chain.</li>
+</ul>
+<p>Note that we will have as many <code>instanceof</code> checks as the number of
+well-defined interactions. Also note that what we&rsquo;ve done here, is pretty
+much <a href="https://docs.microsoft.com/en-us/dotnet/csharp/pattern-matching">pattern matching</a>,
+just a lot uglier. Apparently more recent Java versions have
+<a href="https://cr.openjdk.java.net/~briangoetz/amber/pattern-match.html">improved on that</a>.
+That being said, this alternative <code>instanceof</code> approach doesn&rsquo;t really have
+a name, and I&rsquo;m not sure if fits among the usual over-abstracted Java code.</p>
+<p>It does seem like we&rsquo;re sidestepping the type system. In each <code>collide</code>
+definition, we lie about what we actually require. Knowing that we are
+colliding with a <code>Creature</code> is not enough, we need more specific type
+information, and yet this isn&rsquo;t reflected in the function signatures.</p>
+<p>The issue is, Java, like many languages, only supports
+<a href="https://en.wikipedia.org/wiki/Dynamic_dispatch#Single_and_multiple_dispatch">single dispatch</a>:</p>
+<blockquote>
+<p>The concrete function that is called from a function call depends
+on the dynamic type of a single object, the receiver, which is <code>a</code> in
+<code>a.collide(b)</code>.</p>
+</blockquote>
+<p>To illustrate:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Creature a <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Archer<span style="color:#f92672">();</span>
+Creature w <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Werewolf<span style="color:#f92672">();</span>
+
+a<span style="color:#f92672">.</span><span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>w<span style="color:#f92672">);</span> <span style="color:#75715e">// Archer.collide(Creature) is called
+</span><span style="color:#75715e"></span>w<span style="color:#f92672">.</span><span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>a<span style="color:#f92672">);</span> <span style="color:#75715e">// Werewolf.collide(Creature) is called
+</span></code></pre></div><h2 id="the-visitor-pattern">The visitor pattern</h2>
+<p>There is no way to achieve <code>Archer.collide(Werewolf)</code> or
+<code>Werewolf.collide(Archer)</code> when both <code>a</code> and <code>w</code> are <code>Creature</code> references,
+without an extra layer of indirection. It is not enough to know the
+concrete type of the &ldquo;collider&rdquo;, the &ldquo;thing being hit&rdquo; should also tell its
+concrete type to the &ldquo;collider&rdquo;. The latter should occur before the former:
+it doesn&rsquo;t make sense to introduce yourself to someone after they&rsquo;ve done
+something special for you &ndash; they need to know who you are to act accordingly.
+This is exactly <a href="https://www.tutorialspoint.com/design_pattern/visitor_pattern.htm">the visitor pattern</a>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// we know &#39;w&#39; is a Werewolf, &#39;w&#39; accepts &#39;a&#39; by calling &#39;a.visit(this)&#39;
+</span><span style="color:#75715e"></span>w<span style="color:#f92672">.</span><span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>a<span style="color:#f92672">);</span>
+
+<span style="color:#75715e">// now we also know &#39;a&#39; is an Archer, so &#39;a&#39; shoots &#39;w&#39;.
+</span><span style="color:#75715e"></span>a<span style="color:#f92672">.</span><span style="color:#a6e22e">visit</span><span style="color:#f92672">(</span>w<span style="color:#f92672">);</span>
+
+<span style="color:#75715e">// similarly for werewolves colliding with archers.
+</span></code></pre></div><p>In our case, <code>Creature</code>s are both visitors and things to be visited, where
+&ldquo;visit&rdquo; is understood as &ldquo;collide&rdquo;.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// things that can collide with creatures should implement (part of) this
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CreatureVisitor</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Knight k<span style="color:#f92672">)</span> <span style="color:#f92672">{};</span>
+    <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Archer k<span style="color:#f92672">)</span> <span style="color:#f92672">{};</span>
+    <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Werewolf w<span style="color:#f92672">)</span> <span style="color:#f92672">{};</span>
+    <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Dragon d<span style="color:#f92672">)</span> <span style="color:#f92672">{};</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Creature</span> <span style="color:#66d9ef">implements</span> CreatureVisitor <span style="color:#f92672">{</span>
+    List<span style="color:#f92672">&lt;</span>Creature<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getColliding</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/*...*/</span> <span style="color:#f92672">}</span>
+    <span style="color:#75715e">// all creatures must &#34;introduce themselves&#34; to things colliding into them
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>CreatureVisitor visitor<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Adventurer</span> <span style="color:#66d9ef">extends</span> Creature <span style="color:#f92672">{}</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Knight</span> <span style="color:#66d9ef">extends</span> Adventurer <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>CreatureVisitor visitor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> visitor<span style="color:#f92672">.</span><span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Knight k<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> greet<span style="color:#f92672">(</span>k<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Werewolf w<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> slash<span style="color:#f92672">(</span>w<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Dragon d<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> taunt<span style="color:#f92672">(</span>d<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Archer</span> <span style="color:#66d9ef">extends</span> Adventurer <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>CreatureVisitor visitor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> visitor<span style="color:#f92672">.</span><span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Werewolf w<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> punch<span style="color:#f92672">(</span>w<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Dragon d<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> shoot<span style="color:#f92672">(</span>d<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Beast</span> <span style="color:#66d9ef">extends</span> Creature <span style="color:#f92672">{}</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Dragon</span> <span style="color:#66d9ef">extends</span> Beast <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>CreatureVisitor visitor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> visitor<span style="color:#f92672">.</span><span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Knight k<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> immolate<span style="color:#f92672">(</span>k<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Archer a<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> immolate<span style="color:#f92672">(</span>a<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Werewolf</span> <span style="color:#66d9ef">extends</span> Beast <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>CreatureVisitor visitor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> visitor<span style="color:#f92672">.</span><span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Knight k<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> disarm<span style="color:#f92672">(</span>k<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">collide</span><span style="color:#f92672">(</span>Archer a<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> charge<span style="color:#f92672">(</span>k<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>It ends up being just as verbose, but indeed it leans upon Java&rsquo;s (nominal)
+type system a bit more. The calling code will also have to change slightly:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Game</span> <span style="color:#f92672">{</span>
+    List<span style="color:#f92672">&lt;</span>Creature<span style="color:#f92672">&gt;</span> cs<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleCollisions</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Creature c1 <span style="color:#f92672">:</span> cs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            List<span style="color:#f92672">&lt;</span>Creature<span style="color:#f92672">&gt;</span> colliding <span style="color:#f92672">=</span> c1<span style="color:#f92672">.</span><span style="color:#a6e22e">getColliding</span><span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Creature c2 <span style="color:#f92672">:</span> colliding<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                c2<span style="color:#f92672">.</span><span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>c1<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>The duplication of <code>collide</code> in <code>CreatureVisitor</code> might be something that can
+improved on, but I&rsquo;m not sure. The use of <code>default</code> might also be less than
+ideal, for instance if each class in the hierarchy only implements 1 or 2 out
+of 10+ methods in the interface. But that would probably be an issue of the
+design of the hierarchy itself.</p>
+<p><a href="https://ericlippert.com/2015/04/27/wizards-and-warriors-part-one/">Here</a>
+is a more in-depth exploration of alternatives to the visitor pattern.</p>
+<h2 id="code-dump">Code dump</h2>
+<p>In the interest of space, here&rsquo;s the equivalent Kotlin code that I used to
+test this.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CreatureVisitor</span> {
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">collide</span>(k: Knight) {}
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">collide</span>(a: Archer) {}
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">collide</span>(w: Werewolf) {}
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">collide</span>(d: Dragon) {}
+}
+<span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Creature</span> : CreatureVisitor {
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getColliding</span>(): List&lt;Creature&gt; = TODO()
+    <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">accept</span>(visitor: CreatureVisitor)
+}
+
+<span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Adventurer</span> : Creature()
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Knight</span> : Adventurer() {
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">accept</span>(visitor: CreatureVisitor) = visitor.collide(<span style="color:#66d9ef">this</span>)
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">collide</span>(k: Knight) = greet(k)
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">collide</span>(d: Dragon) = taunt(d)
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">collide</span>(w: Werewolf) = slash(w)
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">greet</span>(k: Knight) = println(<span style="color:#e6db74">&#34;Hail!&#34;</span>)
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">taunt</span>(d: Dragon) = println(<span style="color:#e6db74">&#34;(knight hits dragon)&#34;</span>)
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">slash</span>(w: Werewolf) = println(<span style="color:#e6db74">&#34;(knight slashes werewolf)&#34;</span>)
+}
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Archer</span> : Adventurer() {
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">accept</span>(visitor: CreatureVisitor) = visitor.collide(<span style="color:#66d9ef">this</span>)
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">collide</span>(w: Werewolf) = punch(w)
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">collide</span>(d: Dragon) = shoot(d)
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">shoot</span>(d: Dragon) = println(<span style="color:#e6db74">&#34;(archer shoots dragon)&#34;</span>)
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">punch</span>(w: Werewolf) = println(<span style="color:#e6db74">&#34;(archer punches werewolf)&#34;</span>)
+}
+
+<span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Beast</span> : Creature()
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Dragon</span> : Beast() {
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">accept</span>(visitor: CreatureVisitor) = visitor.collide(<span style="color:#66d9ef">this</span>)
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">collide</span>(k: Knight) = immolate(k)
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">collide</span>(a: Archer) = immolate(a)
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">immolate</span>(adv: Adventurer) = println(<span style="color:#e6db74">&#34;(dragon immolates adventurer)&#34;</span>)
+}
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Werewolf</span> : Beast() {
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">accept</span>(visitor: CreatureVisitor) = visitor.collide(<span style="color:#66d9ef">this</span>)
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">collide</span>(k: Knight) = disarm(k)
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">collide</span>(a: Archer) = charge(a)
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">disarm</span>(k: Knight) = println(<span style="color:#e6db74">&#34;(werewolf disarms knight)&#34;</span>)
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">charge</span>(a: Archer) = println(<span style="color:#e6db74">&#34;(werewolf charges archer)&#34;</span>)
+}
+
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">val</span> k1 = Knight()
+    <span style="color:#66d9ef">val</span> k2 = Knight()
+    <span style="color:#66d9ef">val</span> a = Archer()
+    <span style="color:#66d9ef">val</span> d = Dragon()
+    <span style="color:#66d9ef">val</span> w = Werewolf()
+    <span style="color:#66d9ef">val</span> cs = listOf(k1, k2, a, d, w)
+    <span style="color:#66d9ef">for</span> (c1 <span style="color:#66d9ef">in</span> cs) {
+        <span style="color:#75715e">// hardcoded: assume every creature is colliding with everything else
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">val</span> colliding = cs.filter { <span style="color:#66d9ef">it</span> <span style="color:#f92672">!=</span> c1 }
+        <span style="color:#66d9ef">for</span> (c2 <span style="color:#66d9ef">in</span> colliding) {
+            c2.accept(c1)
+        }
+    }
+}
+</code></pre></div><p>The output:</p>
+<pre><code class="language-_" data-lang="_">Hail!
+(knight hits dragon)
+(knight slashes werewolf)
+Hail!
+(knight hits dragon)
+(knight slashes werewolf)
+(archer shoots dragon)
+(archer punches werewolf)
+(dragon immolates adventurer)
+(dragon immolates adventurer)
+(dragon immolates adventurer)
+(werewolf disarms knight)
+(werewolf disarms knight)
+(werewolf charges archer)
+</code></pre></article>
+
+        </main><footer id="footer">
+    Copyright © 2020 Jonathan Jauhari
+</footer>
+</body>
+</html>
