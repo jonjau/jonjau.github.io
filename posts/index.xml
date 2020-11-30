@@ -18,7 +18,7 @@
       <pubDate>Fri, 20 Nov 2020 11:23:15 +1100</pubDate>
       
       <guid>https://jonjau.github.io/posts/the-visitor-pattern-for-simple-collision-handling/</guid>
-      <description>Let&amp;rsquo;s say we were building a system where components can interact with other components, and based on the combination of components, different kinds of behaviour is to be expected. We must also assume the handled interactions are only between pairs.
+      <description>Let&amp;rsquo;s say we were building a system where components can interact with other components, and based on the combination of components, some behaviour is to be expected. We must also assume the handled interactions are only between pairs.
 A classic example is a pairwise collision system:
  Adventurers and beasts are creatures. Adventurers are either knights or archers. Beasts are either werewolves or (flying) dragons. When adventurers and beasts collide, they fight.</description>
     </item>
