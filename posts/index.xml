@@ -6,14 +6,26 @@
     <description>Recent content in Posts on Jonathan Jauhari</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Fri, 20 Nov 2020 11:23:15 +1100</lastBuildDate>
+    <lastBuildDate>Sun, 27 Dec 2020 18:34:18 +1100</lastBuildDate>
     
 	<atom:link href="https://jonjau.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     
     <item>
-      <title>The Visitor pattern for simple collision handling</title>
+      <title>Making English More Regular With Esperanto Grammar</title>
+      <link>https://jonjau.github.io/posts/making-english-more-regular-with-esperanto-grammar/</link>
+      <pubDate>Sun, 27 Dec 2020 18:34:18 +1100</pubDate>
+      
+      <guid>https://jonjau.github.io/posts/making-english-more-regular-with-esperanto-grammar/</guid>
+      <description>Some problems As a learner of English (who isn&amp;rsquo;t?), I&amp;rsquo;ve come across a lot of inconsistent rules and exceptions in the language, and I can imagine they exist in most other natural languages. People just (have to) get used to them. In general:
+ Grammar is complex (13+ tenses!) and verb modification is irregular. Ambiguous semantics: the same sentence can mean different things. Spelling does not reflect pronunciation; accents vary wildly.</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>The Visitor Pattern for Simple Collision Handling</title>
       <link>https://jonjau.github.io/posts/the-visitor-pattern-for-simple-collision-handling/</link>
       <pubDate>Fri, 20 Nov 2020 11:23:15 +1100</pubDate>
       
@@ -28,7 +40,7 @@ A classic example is a pairwise collision system:
     
     
     <item>
-      <title>A sudoku solver in 15 lines of Prolog</title>
+      <title>A Sudoku Solver in 15 Lines of Prolog</title>
       <link>https://jonjau.github.io/posts/a-sudoku-solver-in-15-lines-of-prolog/</link>
       <pubDate>Mon, 26 Oct 2020 18:22:55 +1100</pubDate>
       
@@ -41,7 +53,7 @@ I&amp;rsquo;ve added some annotations below &amp;ndash; it really is just precis
     
     
     <item>
-      <title>Monads, Applicatives and Functors in Haskell</title>
+      <title>Monads, Applicatives, and Functors in Haskell</title>
       <link>https://jonjau.github.io/posts/monads-applicatives-and-functors-in-haskell/</link>
       <pubDate>Wed, 07 Oct 2020 22:31:10 +1100</pubDate>
       

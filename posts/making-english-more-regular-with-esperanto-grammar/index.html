@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="a personal website">
+    
+    <link rel="shortcut icon" href="https://jonjau.github.io/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/style.min.css">
+
+    <title>Making English More Regular With Esperanto Grammar</title>
+</head>
+<body><header id="banner">
+    <h2>
+        <div style="
+        display: inline-block;
+        height: 20px;
+        width: 20px;
+        background-color: #1D7464;
+        "></div>
+        <a href="https://jonjau.github.io">Jonathan Jauhari</a></h2>
+    <nav>
+        <ul>
+            <li>
+                <a href="/posts/" title="posts">posts</a>
+            </li><li>
+                <a href="/projects/" title="projects">projects</a>
+            </li><li>
+                <a href="/about/" title="about">about</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<hr/>
+        <main id="content">
+<article>
+    <header id="post-header">
+        <h1>Making English More Regular With Esperanto Grammar</h1><time>December 27, 2020</time></header><h2 id="some-problems">Some problems</h2>
+<p>As a learner of English (who isn&rsquo;t?), I&rsquo;ve come across a lot of inconsistent
+rules and exceptions in the language, and I can imagine they exist in most
+other natural languages. People just (have to) get used to them. In general:</p>
+<ol>
+<li>Grammar is complex (13+ tenses!) and verb modification is irregular.</li>
+<li>Ambiguous semantics: the same sentence can mean different things.</li>
+<li>Spelling does not reflect pronunciation; accents vary wildly.</li>
+<li>Vocabulary is vast and borrows from many other languages.</li>
+<li>Spoken vs written disconnect: slang, idioms, figures of speech.</li>
+</ol>
+<p>What can be done to improve it? I&rsquo;m not sure, but there have been
+<a href="https://en.wikipedia.org/wiki/Learning_English_(version_of_English)">been</a>
+<a href="https://en.wikipedia.org/wiki/Basic_English">many</a>
+<a href="https://en.wikipedia.org/wiki/Simple_English_Wikipedia">efforts</a>, mainly
+by simplifying sentence structure and restricting vocabulary.</p>
+<p>Designing a new language from the ground up is hard, so in any case
+vocabulary should be kept constant (if not restricted to simpler words). This
+means points 3, 4, 5 are off-limits, there is no way to improve on those
+without modifying English words or how they are spelled
+(<a href="https://jonjau.github.io/projects/cifero/">related</a>). So, grammar has to
+change.</p>
+<p>I&rsquo;ve been thinking about how Esperanto
+<a href="https://lernu.net/en/gramatiko">grammar constructs</a> (the few that I know)
+might be used to make English and similar languages to be more regular. This
+should address point 1 and, to a certain extent, point 2 as well. Specifically,
+this post explores that in the context of ambiguity in sentences, which is
+apparently
+<a href="https://michealaxelsen.com/blog/?p=346">an inherent property of all natural languages</a>.</p>
+<h3 id="grammar-simplification">Grammar simplification</h3>
+<p>All we&rsquo;re taking from Esperanto are the suffixes and sentence structure.
+Suffixes do most of the work and they are regular:</p>
+<table>
+<thead>
+<tr>
+<th>Suffix</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-o</td>
+<td>noun</td>
+</tr>
+<tr>
+<td>-a</td>
+<td>adjective</td>
+</tr>
+<tr>
+<td>-e</td>
+<td>adverb</td>
+</tr>
+</tbody>
+</table>
+<p>For verbs:</p>
+<table>
+<thead>
+<tr>
+<th>Suffix</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-as</td>
+<td>present</td>
+</tr>
+<tr>
+<td>-is</td>
+<td>past</td>
+</tr>
+<tr>
+<td>-os</td>
+<td>future</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>imperative</td>
+</tr>
+<tr>
+<td>-us</td>
+<td>conditional</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>infinitive</td>
+</tr>
+<tr>
+<td>-anta</td>
+<td>is still doing</td>
+</tr>
+<tr>
+<td>-inta</td>
+<td>was doing before</td>
+</tr>
+<tr>
+<td>-onta</td>
+<td>will be doing</td>
+</tr>
+<tr>
+<td>-ata</td>
+<td>is being done</td>
+</tr>
+<tr>
+<td>-ita</td>
+<td>has been done</td>
+</tr>
+<tr>
+<td>-ota</td>
+<td>will be done</td>
+</tr>
+</tbody>
+</table>
+<p>So, words can become verbs, adjectives or adverbs, as appropriate.
+In this system, the words to which we attach suffixes are the English words,
+those words don&rsquo;t have to be actual root words. Maybe they should be, but
+determining word roots when forming sentences is too much, I think. English
+prepositions (over, on, at), articles (a, the), conjunctions (and, or) are
+not changed.</p>
+<h3 id="syntactic-ambiguity">Syntactic ambiguity</h3>
+<p>&hellip;or structural ambiguity or grammatical ambiguity. This is when
+the structure of the sentence makes its meaning unclear.</p>
+<p>A popular example is:</p>
+<pre><code class="language-_" data-lang="_">I saw a man on a hill with a telescope.
+</code></pre><p>There are several interpretations:</p>
+<ol>
+<li>The hill has a telescope.</li>
+<li>The man has a telescope.</li>
+<li>I used a telescope to see the man.</li>
+</ol>
+<p>The sentence might be disambiguated by context, or a change in sentence
+structure:</p>
+<pre><code class="language-_" data-lang="_">1. I saw a man on a hill, which had a telescope.
+2. I saw a man, who had a telescope, on a hill.
+3. I saw, using a telescope, a man on a hill.
+</code></pre><p>If it were &ldquo;I saw a man with a woman with a telescope&rdquo;, disambiguation
+would be much more difficult. In speech, emphasis and pauses could be used.</p>
+<p>A possible translation:</p>
+<pre><code class="language-_" data-lang="_">1. I see-is man-on on have-telescope-a hill-o.
+2. I see-is have-telescope-a man-on on hill-o.
+3. I use-telescope-e see-is man-on on hill-o.
+</code></pre><ul>
+<li>the article &lsquo;a&rsquo; is dropped.</li>
+<li>-o marks a noun.</li>
+<li>-on marks a noun that is the direct object of the verb
+(here the man is the object of seeing, &lsquo;so man-on&rsquo;).</li>
+<li>-is turns a verb into past tense.</li>
+<li>-e marks an adverb.</li>
+<li>-a marks an adjective.</li>
+</ul>
+<p>But using -e and -a to mark adverbial and adjectival clauses is probably not
+a good idea, since they might get more complex. What if instead of &lsquo;have
+telescope&rsquo; we had &lsquo;had one telescope and now have two&rsquo;? More extensible but
+less natural would be:</p>
+<pre><code class="language-_" data-lang="_">1. I see-is man-on on hill-o which have-as telescope-on.
+2. I see-is man-on who have-as telescope-on on hill-o.
+3. I see-is use-ante telescope-on man-on on hill-o.
+</code></pre><ul>
+<li>-ant- marks continuity, and again, -e makes an adverb so &lsquo;use-ante
+telescope-on&rsquo; is an adverbial clause that would describe an action as &lsquo;using
+a telescope&rsquo;, in this case the action is &lsquo;seeing&rsquo;.</li>
+<li>-as turns a verb into present tense.</li>
+</ul>
+<h3 id="lexical-ambiguity-1">Lexical ambiguity 1</h3>
+<pre><code class="language-_" data-lang="_">She went to the bank.
+</code></pre><p>What bank? Merriam-Webster lists
+<a href="https://www.merriam-webster.com/dictionary/bank">5 entries</a> for &lsquo;bank&rsquo;, but
+the sentence structure rules out the verb definitions. Also, the 5th definition
+(&lsquo;a group or series of objects arranged together in a row&rsquo;) seems quire rare.
+Here &lsquo;bank&rsquo; is either:</p>
+<ol>
+<li>the bank of a river</li>
+<li>the bank to deposit your money in</li>
+</ol>
+<p>Further context is needed, and often it is available. There is no good way to
+deal with this without adding an extra clause.</p>
+<pre><code class="language-_" data-lang="_">1. She go-is to the-bank-o of the-river-o.
+2. She go-is to the-bank-o for store-i money-o.
+</code></pre><ul>
+<li>-i makes a verb infinitive &lsquo;store-i money-o&rsquo; is &lsquo;to store money&rsquo;.</li>
+</ul>
+<h3 id="lexical-ambiguity-2">Lexical ambiguity 2</h3>
+<pre><code class="language-_" data-lang="_">I like understanding people.
+</code></pre><p>This time the sentence structure doesn&rsquo;t help us, and the ambiguity arises
+from the fact that &lsquo;understanding&rsquo; can be a verb or an adjective:</p>
+<ol>
+<li>I like people who are understanding.</li>
+<li>I like to understand people.</li>
+</ol>
+<p>Disambiguation by inventing new English words (this is irregular, and not always
+possible):</p>
+<pre><code class="language-_" data-lang="_">1. I like understanders.
+2. I like people-understanding.
+</code></pre><p>Esperanto grammar is particularly well-suited for this. Changing the suffix
+changes the role of the word.</p>
+<pre><code class="language-_" data-lang="_">1. I like-as understand-ajn person-ojn.
+2. I like-as understand-i person-ojn.
+</code></pre><p>In the first sentence:</p>
+<ul>
+<li>-j, pronounced like &lsquo;y&rsquo;, marks plurality: &lsquo;people&rsquo; becomes &lsquo;person-oj&rsquo;, then
+it becomes &lsquo;person-ojn&rsquo; because it is the direct object of &lsquo;like&rsquo;.</li>
+<li>The adjective &lsquo;understand-a&rsquo; describes &lsquo;person-ojn&rsquo;, so the former follows the
+latter&rsquo;s suffixes: &lsquo;understand-ajn&rsquo;.</li>
+</ul>
+<p>In the second sentence:</p>
+<ul>
+<li>-i marks an infinitive: &lsquo;understand-i&rsquo; is &lsquo;to understand&rsquo;.</li>
+<li>&lsquo;understand-i person-ojn&rsquo; means &lsquo;people-understanding&rsquo; as a noun, it is the
+direct object of &lsquo;like&rsquo;, so there is an -n.</li>
+</ul>
+<h3 id="morphological-ambiguity">Morphological ambiguity</h3>
+<p>Somewhat related to lexical ambiguity is morphological ambiguity, which (as I
+understand) is when adding prefixes and suffixes leads to (further) ambiguity.</p>
+<pre><code class="language-_" data-lang="_">This shoe is untieable.
+</code></pre><p>Interpretations:</p>
+<ol>
+<li>This shoe can be untied.</li>
+<li>This shoe cannot be tied.</li>
+</ol>
+<p>With punctuation (different emphasis in speech):</p>
+<pre><code class="language-_" data-lang="_">1. This shoe is untie-able.
+2. This shoe is un-tieable.
+</code></pre><p>With Esperanto grammar:</p>
+<pre><code class="language-_" data-lang="_">1. This-shoe-o can-as be-i tie-ita.
+2. This-shoe-o not-can-as be-i tie-ita.
+</code></pre><ul>
+<li>not- negates</li>
+<li>&lsquo;can&rsquo; is considered a verb</li>
+<li>-ita means &lsquo;has been done&rsquo;: &lsquo;tie-ita&rsquo; means &lsquo;tied&rsquo; as in the adjective
+(note it ends with -a), e.g. tied shoes.</li>
+<li>&lsquo;be-i tie-ita&rsquo; means &lsquo;to be tied&rsquo;</li>
+<li>&lsquo;can-as be-i tie-ita&rsquo; means &lsquo;be able to be tied&rsquo;</li>
+</ul>
+<h3 id="the-comma-problem">The &ldquo;comma problem&rdquo;</h3>
+<pre><code class="language-_" data-lang="_">I invited my parents, Jack and Jill to the party.
+</code></pre><p>Interpretations:</p>
+<ol>
+<li>Two people are invited: my parents who are named Jack and Jill.</li>
+<li>Four people are invited: Jack, Jill and my parents.</li>
+</ol>
+<p>Changing the sentence structure, and punctuation can disambiguate:</p>
+<pre><code class="language-_" data-lang="_">1. I invited my parents, Jack, and Jill to the party.
+   I invited Jack, Jill, and my parents to the party.
+
+2. I invited my parents (Jack and Jill) to the party.
+   I invited to the party, my parents: Jack and Jill.
+</code></pre><p>Esperanto grammar (as well as more regular punctuation):</p>
+<pre><code class="language-_" data-lang="_">1. I invite-is I-an parent-ojn, Jack-on, and Jill-on to the-party-o.
+2. I invite-is I-an parent-ojn who name-as Jack and Jill to the-party-o.
+</code></pre><ul>
+<li>&lsquo;I&rsquo; becomes &lsquo;my&rsquo; by adding -a.</li>
+<li>Since &lsquo;my parents&rsquo; is a direct object we also add -n, so &lsquo;I-an parent-ojn&rsquo;.</li>
+<li>I&rsquo;m not sure if Jack and Jill need -o&rsquo;s in the second sentence.</li>
+</ul>
+<h3 id="the-it-problem">The &ldquo;it problem&rdquo;</h3>
+<pre><code class="language-_" data-lang="_">The dog furiously chased the cat until it suddenly fell.
+</code></pre><p>What is &lsquo;it&rsquo; referring to?</p>
+<ol>
+<li>The dog chased the cat until the cat fell.</li>
+<li>The dog chased the cat until the dog fell.</li>
+</ol>
+<p>I can&rsquo;t think of a way to disambiguate this while keeping the &lsquo;it&rsquo;.</p>
+<pre><code class="language-_" data-lang="_">1. The-dog-o fury-e chase-is the-cat-on until the-cat-o sudden-e fall-is.
+2. The-dog-o fury-e chase-is the-cat-on until the-dog-o sudden-e fall-is.
+</code></pre><h3 id="sample-translation">Sample translation</h3>
+<p><a href="https://omniglot.com/language/articles/englishlearningchallenges.htm">Source</a>.
+With slight alterations:</p>
+<pre><code class="language-_" data-lang="_">English grammar is complex, making it difficult to remember, master and use
+logically. Ensuring you use the correct grammar can be tricky, especially
+when you are in conversation with someone and they are speaking at an
+alarmingly fast pace. Learning grammar is like learning to drive, you can
+learn all of the theory, rules and regulations, but you won't be good at it
+unless you practice it and it starts to become second nature to you. Grammar
+is extremely important, incorrect use of grammar can confuse the person you
+are speaking to and even change the meaning of what you are communicating,
+what's more is native English speakers are hyper-aware of grammar and will
+notice almost immediately if a grammatical error is made, even if this is the
+smallest of errors. Don't get me started on accents...
+</code></pre><p>Esperanto grammar (kind of):</p>
+<pre><code class="language-_" data-lang="_">English-a grammar-o be-as complex-a, such-that difficult-as remember-i,
+master-i and use-i logic-e it-n. Ensure-i that you use-as correct-a grammar-o
+can-as be-i trick-a, special-e when you converse-as with person-o and they
+speak-as at alarm-e fast-a pace-o. Learn-i grammar-on be-as like learn-i
+drive-i, you can-as learn-i all the theory-ojn, rule-ojn, regulation-ojn, but
+you not good-os at it unless you practice-as it-n and it start-as become-i
+second-a nature-o to you. Grammar-o be-is extreme-e important-a,
+not-correct-a use-o of grammar-o can-as confuse-i the person-on whom you
+speak-as, and even change-as the meaning-on of what you communicate-as,
+more-e native-a English-a speaker-oj hyper-e aware-as of grammar-o and
+notice-os almost immediate-e if grammar-a error-o make-itas, even if this
+be-as the most small error-o. Not start-u I-n on accent-oj...
+</code></pre><p>Most of this is probably inaccurate, but it is interesting still.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>Clearly, mixing Esperanto grammar and English vocabulary leads to language
+that is unpleasant and difficult to read, speak, write or listen to. I would
+say this is mostly due to the heavy use of &lsquo;-&rsquo; (maybe apostrophes would have
+been better) and the difference in the pronunciation systems.
+Perhaps a system similar to this may be useful in informal human-readable
+<a href="https://en.wikipedia.org/wiki/Part-of-speech_tagging">speech tagging</a>, to
+disambiguate speech, or more generally, further separate
+grammar from vocabulary (I have not looked into that).</p>
+</article>
+
+        </main><footer id="footer">
+    Copyright © 2020 Jonathan Jauhari
+</footer>
+</body>
+</html>

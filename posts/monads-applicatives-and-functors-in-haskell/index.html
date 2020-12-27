@@ -8,7 +8,7 @@
     
     <link rel="stylesheet" href="/css/style.min.css">
 
-    <title>Monads, Applicatives and Functors in Haskell</title>
+    <title>Monads, Applicatives, and Functors in Haskell</title>
 </head>
 <body><header id="banner">
     <h2>
@@ -35,7 +35,7 @@
         <main id="content">
 <article>
     <header id="post-header">
-        <h1>Monads, Applicatives and Functors in Haskell</h1><time>October 7, 2020</time></header><p>This is my summary of Chapter 11 and 12 of
+        <h1>Monads, Applicatives, and Functors in Haskell</h1><time>October 7, 2020</time></header><p>This is my summary of Chapter 11 and 12 of
 <a href="http://learnyouahaskell.com/chapters">Learn You a Haskell for Great Good!</a>,
 a great introduction to functional programming and Haskell. I&rsquo;ve found its
 explanation of monads, by far the most notorious of category theory jargon
@@ -87,7 +87,7 @@ is still a valid function when only one of its arguments is given:</p>
 (or type constructors). Type constructors are like functions: they may take
 parameters and are automatically curried. Types may have the same name as
 their data constructor(s). Note that type constructors do not have a function
-body), they simply construct types.</p>
+body, they simply construct types.</p>
 <p><code>newtype</code> defines new types out of existing data types:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- this is record syntax in Haskell</span>
 <span style="color:#66d9ef">data</span> <span style="color:#66d9ef">ZipList</span> a <span style="color:#f92672">=</span> <span style="color:#66d9ef">ZipList</span> { getZipList <span style="color:#f92672">::</span> [a] }
@@ -104,7 +104,7 @@ take its place. No data constructor is defined.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">type</span> <span style="color:#66d9ef">MyStr</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">String</span>
 </code></pre></div><h2 id="typeclasses">Typeclasses</h2>
 <p>A typeclass takes a type variable and describes what can be done to it;
-typeclasses are like interfaces.</p>
+typeclasses are like interfaces in languages like Java.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- What does it mean to have well-defined equality?</span>
 <span style="color:#75715e">-- It must define the following functions:</span>
 <span style="color:#66d9ef">class</span> <span style="color:#66d9ef">Eq</span> a <span style="color:#66d9ef">where</span>
@@ -113,7 +113,7 @@ typeclasses are like interfaces.</p>
     x <span style="color:#f92672">==</span> y <span style="color:#f92672">=</span> not (x <span style="color:#f92672">/=</span> y)    <span style="color:#75715e">-- this is the default implementation for (==)</span>
     x <span style="color:#f92672">/=</span> y <span style="color:#f92672">=</span> not (x <span style="color:#f92672">==</span> y)    <span style="color:#75715e">-- and for (/=), note the indirect recursion.</span>
 </code></pre></div><p>typeclasses allow for polymorphism:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- constraints check out: works for any type a that is an instance of Eq</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- constraints check out: &#39;equal&#39; works for any type a that is an instance of Eq</span>
 <span style="color:#a6e22e">equal</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Eq</span> a <span style="color:#f92672">=&gt;</span> a <span style="color:#f92672">-&gt;</span> a <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Bool</span>
 <span style="color:#a6e22e">equal</span> x y <span style="color:#f92672">=</span> x <span style="color:#f92672">==</span> y
 </code></pre></div><p>types can be made instances of typeclasses:</p>
