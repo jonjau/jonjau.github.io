@@ -51,6 +51,8 @@ other natural languages. People just (have to) get used to them. In general:</p>
 <a href="https://en.wikipedia.org/wiki/Basic_English">many</a>
 <a href="https://en.wikipedia.org/wiki/Simple_English_Wikipedia">efforts</a>, mainly
 by simplifying sentence structure and restricting vocabulary.</p>
+<p>Of course, there&rsquo;s no changing the way English is spoken in the
+mainstream, but ideas are ideas, so here&rsquo;s one.</p>
 <p>Designing a new language from the ground up is hard, so in any case
 vocabulary should be kept constant (if not restricted to simpler words). This
 means points 3, 4, 5 are off-limits, there is no way to improve on those
@@ -65,8 +67,7 @@ this post explores that in the context of ambiguity in sentences, which is
 apparently
 <a href="https://michealaxelsen.com/blog/?p=346">an inherent property of all natural languages</a>.</p>
 <h3 id="grammar-simplification">Grammar simplification</h3>
-<p>All we&rsquo;re taking from Esperanto are the suffixes and sentence structure.
-Suffixes do most of the work and they are regular:</p>
+<p>All we&rsquo;re taking from Esperanto are the suffixes and sentence structure.</p>
 <table>
 <thead>
 <tr>
@@ -89,73 +90,141 @@ Suffixes do most of the work and they are regular:</p>
 </tr>
 </tbody>
 </table>
-<p>For verbs:</p>
+<p>The immediate problem are the words themselves. Most English words have
+meaning baked into their &ldquo;root words&rdquo;, like &lsquo;often&rsquo; or &lsquo;again&rsquo;; modifying
+them with suffixes does not make sense (&lsquo;often-e&rsquo; ?) and should be avoided,
+but what if someone does it anyway? Exceptions regarding special word forms
+will have to remain.</p>
+<p>A good practice might be to avoid special words altogether, and stick with
+simple verb words. The verb suffix system for Esperanto is
+<a href="http://esperanto.davidgsimpson.com/eo-verbforms.html">well-defined</a>:</p>
 <table>
 <thead>
 <tr>
 <th>Suffix</th>
 <th>Meaning</th>
+<th>Example</th>
+<th>Interpretation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>-as</td>
 <td>present</td>
+<td>I do-as</td>
+<td>I do</td>
 </tr>
 <tr>
 <td>-is</td>
 <td>past</td>
+<td>I do-is</td>
+<td>I did</td>
 </tr>
 <tr>
 <td>-os</td>
 <td>future</td>
+<td>I do-os</td>
+<td>I will do</td>
 </tr>
 <tr>
 <td>-u</td>
 <td>imperative</td>
+<td>do-u it-n!</td>
+<td>do it!</td>
 </tr>
 <tr>
 <td>-us</td>
 <td>conditional</td>
+<td>I do-us</td>
+<td>I would do</td>
 </tr>
 <tr>
 <td>-i</td>
 <td>infinitive</td>
-</tr>
-<tr>
-<td>-anta</td>
-<td>is still doing</td>
-</tr>
-<tr>
-<td>-inta</td>
-<td>was doing before</td>
-</tr>
-<tr>
-<td>-onta</td>
-<td>will be doing</td>
-</tr>
-<tr>
-<td>-ata</td>
-<td>is being done</td>
-</tr>
-<tr>
-<td>-ita</td>
-<td>has been done</td>
-</tr>
-<tr>
-<td>-ota</td>
-<td>will be done</td>
+<td>do-i it</td>
+<td>to do it</td>
 </tr>
 </tbody>
 </table>
-<p>So, words can become verbs, adjectives or adverbs, as appropriate.
-In this system, the words to which we attach suffixes are the English words,
-those words don&rsquo;t have to be actual root words. Maybe they should be, but
-determining word roots when forming sentences is too much, I think. English
-prepositions (over, on, at), articles (a, the), conjunctions (and, or) are
-not changed.</p>
+<p>More complex verb suffixes (maybe unnecessary)</p>
+<table>
+<thead>
+<tr>
+<th>Suffix</th>
+<th>Meaning</th>
+<th>Example</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-anta</td>
+<td>present active</td>
+<td>I be-as do-anta</td>
+<td>I am doing</td>
+</tr>
+<tr>
+<td>-inta</td>
+<td>perfect active</td>
+<td>I be-as do-inta</td>
+<td>I have done</td>
+</tr>
+<tr>
+<td>-onta</td>
+<td>future active</td>
+<td>I be-as do-onta</td>
+<td>I am about to do</td>
+</tr>
+<tr>
+<td>-ata</td>
+<td>present passive</td>
+<td>I be-as do-ata</td>
+<td>I am being done</td>
+</tr>
+<tr>
+<td>-ita</td>
+<td>perfect passive</td>
+<td>I be-as do-ita</td>
+<td>I have been done</td>
+</tr>
+<tr>
+<td>-ota</td>
+<td>future passive</td>
+<td>I be-as do-ota</td>
+<td>I am about to be done</td>
+</tr>
+</tbody>
+</table>
+<h3 id="going-further">Going further</h3>
+<p>But what if we wanted to extend verbs such that they could be nouns,
+adjectives or adverbs?</p>
+<p>Consider <code>'repeat-e'</code>. It means &lsquo;repeat&rsquo;, as an adverb. But how exactly should
+it be interpreted?</p>
+<ol>
+<li>Repetitively</li>
+<li>Repeatedly</li>
+</ol>
+<p>Both are adverbs and they overlap in meaning &ndash; maybe they should not be
+different words in the first place. But the rule was to not modify English
+words more than necessary. Trying to get at meaning 1 leads to another issue:</p>
+<ol>
+<li><code>repetition-e</code></li>
+<li><code>repetitive-e</code></li>
+<li><code>repetitively-e</code></li>
+</ol>
+<p>Which one is correct? Perhaps all of them, although 3 is redundant. We see
+mixing English suffixes and (abused) Esperanto suffixes leads to even more
+choice.</p>
+<p>So, abusing Esperanto&rsquo;s suffix system, words can become verbs, adjectives or
+adverbs, as appropriate. Let&rsquo;s say prepositions (over, on, at), articles (a,
+the), conjunctions (and, or) are not changed.</p>
+<p>In this system, the words to
+which we attach suffixes are the English words, and those words don&rsquo;t have to
+be actual root words. It&rsquo;s not always possible and might lead to ambiguity
+(e.g. <code>'repeat-e'</code>).</p>
+<p>Here&rsquo;s how the system might be used to disambiguate some sentences:</p>
 <h3 id="syntactic-ambiguity">Syntactic ambiguity</h3>
-<p>&hellip;or structural ambiguity or grammatical ambiguity. This is when
+<p>Also known as structural ambiguity or grammatical ambiguity. This is when
 the structure of the sentence makes its meaning unclear.</p>
 <p>A popular example is:</p>
 <pre><code class="language-_" data-lang="_">I saw a man on a hill with a telescope.
@@ -214,7 +283,7 @@ deal with this without adding an extra clause.</p>
 <pre><code class="language-_" data-lang="_">1. She go-is to the-bank-o of the-river-o.
 2. She go-is to the-bank-o for store-i money-o.
 </code></pre><ul>
-<li>-i makes a verb infinitive &lsquo;store-i money-o&rsquo; is &lsquo;to store money&rsquo;.</li>
+<li>-i makes a verb infinitive: &lsquo;store-i money-o&rsquo; is &lsquo;to store money&rsquo;.</li>
 </ul>
 <h3 id="lexical-ambiguity-2">Lexical ambiguity 2</h3>
 <pre><code class="language-_" data-lang="_">I like understanding people.
@@ -258,7 +327,7 @@ understand) is when adding prefixes and suffixes leads to (further) ambiguity.</
 <pre><code class="language-_" data-lang="_">1. This shoe is untie-able.
 2. This shoe is un-tieable.
 </code></pre><p>With Esperanto grammar:</p>
-<pre><code class="language-_" data-lang="_">1. This-shoe-o can-as be-i tie-ita.
+<pre><code class="language-_" data-lang="_">1. This-shoe-o can-as be-i not-tie-ita.
 2. This-shoe-o not-can-as be-i tie-ita.
 </code></pre><ul>
 <li>not- negates</li>
@@ -267,6 +336,7 @@ understand) is when adding prefixes and suffixes leads to (further) ambiguity.</
 (note it ends with -a), e.g. tied shoes.</li>
 <li>&lsquo;be-i tie-ita&rsquo; means &lsquo;to be tied&rsquo;</li>
 <li>&lsquo;can-as be-i tie-ita&rsquo; means &lsquo;be able to be tied&rsquo;</li>
+<li>&lsquo;can-as be-i not-tie-ita&rsquo; means &lsquo;be able to be not tied&rsquo;</li>
 </ul>
 <h3 id="the-comma-problem">The &ldquo;comma problem&rdquo;</h3>
 <pre><code class="language-_" data-lang="_">I invited my parents, Jack and Jill to the party.
@@ -323,7 +393,7 @@ you not good-os at it unless you practice-as it-n and it start-as become-i
 second-a nature-o to you. Grammar-o be-is extreme-e important-a,
 not-correct-a use-o of grammar-o can-as confuse-i the person-on whom you
 speak-as, and even change-as the meaning-on of what you communicate-as,
-more-e native-a English-a speaker-oj hyper-e aware-as of grammar-o and
+more-e, native-a English-a speaker-oj hyper-e aware-as of grammar-o and
 notice-os almost immediate-e if grammar-a error-o make-itas, even if this
 be-as the most small error-o. Not start-u I-n on accent-oj...
 </code></pre><p>Most of this is probably inaccurate, but it is interesting still.</p>
@@ -335,7 +405,7 @@ been better) and the difference in the pronunciation systems.
 Perhaps a system similar to this may be useful in informal human-readable
 <a href="https://en.wikipedia.org/wiki/Part-of-speech_tagging">speech tagging</a>, to
 disambiguate speech, or more generally, further separate
-grammar from vocabulary (I have not looked into that).</p>
+grammar from vocabulary (unlikely).</p>
 </article>
 
         </main><footer id="footer">
